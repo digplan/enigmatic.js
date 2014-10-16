@@ -3,7 +3,8 @@ $$ = document.querySelectorAll.bind(document);
 
 var load = function(s, cb) {
     var i = document.body.appendChild(document.createElement('script'));
-    i.onload = cb; i.src = s;
+    i.onload = cb;
+    i.src = s;
 }
 
 var get = function(u, cb) {
@@ -19,19 +20,27 @@ var get = function(u, cb) {
     };
 }
 
-window.onload = function(){
-  load('http://twitter.github.com/hogan.js/builds/3.0.1/hogan-3.0.1.js', setup);
+window.onload = function() {
+    load('http://twitter.github.com/hogan.js/builds/3.0.1/hogan-3.0.1.js', setup);
 }
 
-function setup(){
-	Array.prototype.slice.call($$('[hidden]')).forEach(function(e){
-	  console.log(e)
-	  e.template = Hogan.compile(e.innerHTML);
-	  e.render = function(o){
-	  	if(typeof o === 'string')
-	  	  return get(o, arguments.callee);
-	  	e.innerHTML = e.template.render(o); e.hidden = false;
-	  }
-	})
-	ready();
+function setup() {
+    Array.prototype.slice.call($$('[hidden]')).forEach(function(e) {
+        console.log(e)
+        e.template = Hogan.compile(e.innerHTML);
+        e.render = function(o) {
+            if (typeof o === 'string')
+                return get(o, arguments.callee);
+            e.innerHTML = e.template.render(o);
+            e.hidden = false;
+        }
+    })
+    Array.prototype.slice.call($$('[control]')).forEach(function(e) {
+        var o = {};
+        Array.prototype.slice.call(e.attributes).forEach(function(a) {
+            o[a.nodeName] = a.nodeValue;
+        })
+        e.innerHTML = window[e.tagName.toLowerCase()](o, e);
+    })
+    ready();
 }
