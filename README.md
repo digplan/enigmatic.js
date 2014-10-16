@@ -34,3 +34,11 @@ get(url, callback);
   }
 </script>
 ````
+
+####Web controls
+````
+<script src='en.js'></script>
+<script src='//dpsw.info/controls.js'></script>
+
+<feedburner n='basstracks.info' control>
+````
