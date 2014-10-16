@@ -24,8 +24,12 @@ window.onload = function() {
     load('http://twitter.github.com/hogan.js/builds/3.0.1/hogan-3.0.1.js', setup);
 }
 
+function sliceNodes(what, each){
+   Array.prototype.slice.call(what).forEach(each);
+}
+
 function setup() {
-    Array.prototype.slice.call($$('[hidden]')).forEach(function(e) {
+    sliceNodes($$('[hidden]'), function(e) {
         console.log(e)
         e.template = Hogan.compile(e.innerHTML);
         e.render = function(o) {
@@ -35,9 +39,9 @@ function setup() {
             e.hidden = false;
         }
     })
-    Array.prototype.slice.call($$('[control]')).forEach(function(e) {
+    sliceNodes($$('[control]'), function(e) {
         var o = {};
-        Array.prototype.slice.call(e.attributes).forEach(function(a) {
+        sliceNodes(e.attributes, function(a) {
             o[a.nodeName] = a.nodeValue;
         })
         e.innerHTML = window[e.tagName.toLowerCase()](o, e);
