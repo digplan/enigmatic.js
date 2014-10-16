@@ -46,5 +46,5 @@ function setup() {
         })
         e.innerHTML = window[e.tagName.toLowerCase()](o, e);
     })
-    ready();
+    ready && ready();
 }
