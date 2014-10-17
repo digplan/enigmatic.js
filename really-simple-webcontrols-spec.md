@@ -1,5 +1,5 @@
 ##Description
-The really simple web control standard defines a HTML element to javascript function binding.    
+The "really simple webcontrol" standard defines a HTML element to javascript function binding.    
 This allows web app functionality to be encapsulated and declared from within an HTML document.    
     
 The goal is to provide a very approachable and easy to implement web controls functionality.    
