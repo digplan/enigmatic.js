@@ -21,3 +21,6 @@ This is an example of a helloworld control, with a parameter of name, value of "
   }
 </script>
 ````
+
+Displays **hello me** on the page.    
+
