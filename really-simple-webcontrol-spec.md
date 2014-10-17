@@ -24,3 +24,21 @@ This is an example of a helloworld control, with a parameter of name, value of "
 
 Displays **hello me** on the page.    
 
+##Implementation
+A sample implementation may look like this.  Functions are declared in the global scope (window) in this example, but implementations could put all functions in a *window.funcs* scope if namespace collision is a concern.    
+
+````
+$$ = document.querySelectorAll.bind(document);
+
+function sliceNodes(what, func){
+
+}
+
+sliceNodes($$('[control]'), function(e) {
+  var o = {};
+  sliceNodes(e.attributes, function(a) {
+    o[a.nodeName] = a.nodeValue;
+  });
+  e.innerHTML = window[e.tagName.toLowerCase()](o, e);
+});
+````
