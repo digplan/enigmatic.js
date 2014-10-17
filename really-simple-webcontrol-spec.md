@@ -28,17 +28,19 @@ Displays **hello me** on the page.
 A sample implementation may look like this.  Functions are declared in the global scope (window) in this example, but implementations could put all functions in a *window.funcs* scope if namespace collision is a concern.    
 
 ````
+// helper functions
 $$ = document.querySelectorAll.bind(document);
-
-function sliceNodes(what, func){
-
+function sliceNodes(what, each) {
+   Array.prototype.slice.call(what).forEach(each);
 }
 
+// iterate controls and get attributes
 sliceNodes($$('[control]'), function(e) {
   var o = {};
   sliceNodes(e.attributes, function(a) {
     o[a.nodeName] = a.nodeValue;
   });
+  // set HTML element value
   e.innerHTML = window[e.tagName.toLowerCase()](o, e);
 });
 ````
