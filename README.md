@@ -37,7 +37,7 @@ get(url, callback);
 
 ####Web controls
 ````
-<script src='en.js'></script>
+<script src='enigmatic.js'></script>
 <script src='//dpsw.info/controls.js'></script>
 
 <feedburner n='basstracks.info' control>

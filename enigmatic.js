@@ -7,10 +7,12 @@ var load = function(s, cb) {
     i.src = s;
 }
 
-var get = function(u, cb) {
+var ajax = function(u, cb, verb, d) {
     var x = new XMLHttpRequest;
-    x.open('GET', u, true);
-    x.send();
+    x.open(verb, u, true);
+    if(verb=='POST') 
+      x.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    x.send(d);
     x.onload = function(r) {
         var resp = r.target.responseText;
         try {
@@ -18,6 +20,14 @@ var get = function(u, cb) {
         } catch (e) {}
         (cb || console.log.bind(console))(resp);
     };
+}
+
+var get = function(u, cb){
+    return ajax(u, cb, 'GET');
+}
+
+var post = function(u, d, cb){
+    return ajax(u, cb, 'POST', d);
 }
 
 window.onload = function() {

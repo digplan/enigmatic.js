@@ -1,0 +1,19 @@
+<script src='enigmatic.js'></script>
+<script src='//dpsw.info/controls.js'></script>
+
+<div id='stuff' hidden>
+  {{#items}} 
+    {{title}} {{url}} <br>
+  {{/items}}
+</div>
+
+<feedburner n='basstracks.info' control>
+
+<script>
+  function ready(){
+    $('#stuff').render('https://jsonp.nodejitsu.com/?&url=http://api.ihackernews.com/page?format=json');
+  }
+
+  //get('//http-echo.com?geta=1');
+  post('//http-echo.com', 'posta=1');
+</script>
