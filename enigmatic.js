@@ -25,7 +25,7 @@ var ajax = function(verb, u, d, cb) {
 var get = function(u, cb){ return ajax('GET', u, cb)}
 var post = function(u, d, cb){ return ajax('POST', u, d, cb)}
 var put = function(u, d, cb){ return ajax('PUT', u, d, cb)}
-var delete = function(u, d, cb){ return ajax('DELETE', u, d, cb)}
+window.delete = function(u, d, cb){ return ajax('DELETE', u, d, cb)}
 
 window.onload = function() {
     load('http://twitter.github.com/hogan.js/builds/3.0.1/hogan-3.0.1.js', setup);
@@ -53,5 +53,5 @@ function setup() {
         })
         e.innerHTML = window[e.tagName.toLowerCase()](o, e);
     })
-    ready && ready();
+    window.ready && window.ready();
 }
