@@ -3,30 +3,30 @@ enigmatic.js
 
 Easy declarative template rendering in vanilla JS    
 
-####Instructions
-Mark any Divs you want to render as Hidden    
-Inside goes the template    
-Make a ready() function    
-Call render() on the element with an object or URL to get JSON    
+####$('')  QuerySelector
+####$$('')  QuerySelectorAll
+####load(jssrc, callback);
+####ajax(verb, url, data, callback);
+####get(url, callback)
+####post(url, data, callback)
+####put(url, data, callback)
+####window.delete(url, data, callback)
 
-####Helpers
-$ document.querySelector    
-$$ document.querySelectorAll    
-load(script_src, callback);    
-get(url, callback);    
+####Element.child(html)  for creating child Div elements
+####Hogan  Auto-loaded for templating
+
+####Easy rendering
+
+Attribute any Divs you want to render as Hidden, call render on element.    
 
 ````
 <script src='enigmatic.js'></script>
 
-{{#items}}
-  <div id='stuff' hidden>
+<div id='stuff' hidden>
   	 {{#items}} 
-
   	   {{title}} {{url}} <br>
-
   	 {{/items}}
-  </div>
-{{/items}}
+</div>
 
 <script>
   function ready(){
@@ -36,9 +36,14 @@ get(url, callback);
 ````
 
 ####Web controls
-````
-<script src='enigmatic.js'></script>
-<script src='//dpsw.info/controls.js'></script>
 
-<feedburner n='basstracks.info' control>
+Attribute any element as a control.  Controls are defined in JS functions.
+````
+<script src='//dpsw.info/enigmatic.js'></script>
+<mapstatic where='Chicago' control></mapstatic>
+<script>
+  function mapstatic(p,e){
+    e.child('<img src=\"https://maps.googleapis.com/maps/api/staticmap?center='+p.where+'&zoom=13&size=600x300&maptype=roadmap\"/>');
+  }
+</script>
 ````

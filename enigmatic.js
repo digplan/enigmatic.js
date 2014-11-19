@@ -1,6 +1,11 @@
 $ = document.querySelector.bind(document);
 $$ = document.querySelectorAll.bind(document);
 
+Element.prototype.child = function(h){
+  var e = document.createElement('div');
+  e.innerHTML = h; this.appendChild(e);
+}
+
 var load = function(s, cb) {
     var i = document.body.appendChild(document.createElement('script'));
     i.onload = cb;
@@ -10,8 +15,14 @@ var load = function(s, cb) {
 var ajax = function(verb, u, d, cb) {
     var x = new XMLHttpRequest;
     x.open(verb, u, true);
-    if(verb != 'GET') 
+    if(verb != 'GET'){
       x.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+      if(typeof d === 'object'){
+        var s = [];
+        for(i in d) s.push(i + '=' + d[i]);
+        d = s.join('&'); 
+      }
+    }
     x.send(d);
     x.onload = function(r) {
         var resp = r.target.responseText;
@@ -47,11 +58,12 @@ function setup() {
         }
     })
     sliceNodes($$('[control]'), function(e) {
-        var o = {};
+        var o = {}, control = e.attributes['control'].value || e.tagName;
         sliceNodes(e.attributes, function(a) {
             o[a.nodeName] = a.nodeValue;
         })
-        e.innerHTML = window[e.tagName.toLowerCase()](o, e);
+        var res = window[control.toLowerCase()](o, e);
+        if(res) e.innerHTML = res;
     })
     window.ready && window.ready();
 }
