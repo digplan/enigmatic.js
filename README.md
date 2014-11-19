@@ -44,6 +44,7 @@ Attribute any element as a control.  Controls are defined in JS functions.
 <script>
   function mapstatic(p,e){
     e.child('<img src=\"https://maps.googleapis.com/maps/api/staticmap?center='+p.where+'&zoom=13&size=600x300&maptype=roadmap\"/>');
+    // return string as innerHTML, or object and element id in callable in JS
   }
 </script>
 ````

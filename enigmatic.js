@@ -63,7 +63,8 @@ function setup() {
             o[a.nodeName] = a.nodeValue;
         })
         var res = window[control.toLowerCase()](o, e);
-        if(res) e.innerHTML = res;
+        if(typeof res === 'undefined' || !res) return;
+        typeof res === 'string' ? e.innerHTML = res : window[e.id] = res;
     })
     window.ready && window.ready();
 }
