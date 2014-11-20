@@ -33,7 +33,7 @@ var ajax = function(verb, u, d, cb) {
     };
 }
 
-var get = function(u, cb){ return ajax('GET', u, cb)}
+var get = function(u, cb){ return ajax('GET', u, null, cb)}
 var post = function(u, d, cb){ return ajax('POST', u, d, cb)}
 var put = function(u, d, cb){ return ajax('PUT', u, d, cb)}
 window.delete = function(u, d, cb){ return ajax('DELETE', u, d, cb)}
@@ -52,7 +52,7 @@ function setup() {
         e.template = Hogan.compile(e.innerHTML);
         e.render = function(o) {
             if (typeof o === 'string')
-                return get(o, arguments.callee);
+               o = get(o, arguments.callee);
             e.innerHTML = e.template.render(o);
             e.hidden = false;
         }
