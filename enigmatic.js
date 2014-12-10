@@ -2,7 +2,6 @@ $ = document.querySelector.bind(document);
 $$ = document.querySelectorAll.bind(document);
 Element.prototype.$ = Element.prototype.querySelector;
 Element.prototype.$$ = Element.prototype.querySelectorAll;
-
 Element.prototype.child = function(h, type) {
   var e = document.createElement(type || 'div');
   if (h) e.innerHTML = h;
@@ -10,7 +9,7 @@ Element.prototype.child = function(h, type) {
   return e;
 }
 
-var load = function(s, cb) {
+function load(s, cb) {
   var css = s.match(/css$/);
   var i = document.body.appendChild(document.createElement(css ? 'link' : 'script'));
   i.onload = cb;
@@ -21,17 +20,9 @@ var load = function(s, cb) {
   css && cb && cb();
 }
 
-window.onload = function() {
-  load('http://twitter.github.com/hogan.js/builds/3.0.1/hogan-3.0.1.js', setup);
-}
-
-function sliceNodes(what, each) {
-  Array.prototype.slice.call(what).forEach(each);
-}
-
 function docontrols(parent) {
   parent = parent || document.body;
-  sliceNodes(parent.$$('[control]'), function(e) {
+  Array.prototype.slice.call(parent.$$('[control]')).forEach(function(e) {
     var o = {},
       control = e.attributes['control'].value || e.tagName;
     sliceNodes(e.attributes, function(a) {
@@ -52,16 +43,7 @@ function docontrols(parent) {
   });
 }
 
-function setup() {
+window.addEventListener('load', function() {
   docontrols();
   window.ready && window.ready();
-}
-
-String.prototype.f = function() {
-  var f = this,
-    r = arguments;
-  for (a in r) {
-    f = f.replace("$", r[a]);
-  };
-  return f;
-}
+});
