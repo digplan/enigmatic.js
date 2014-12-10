@@ -1,6 +1,16 @@
 function helloworld(p, e){
    return 'Hello ' + p.name || 'World';
 }
+function template(p, e){
+    e.template = Hogan.compile(e.innerHTML);
+    e.render = function(o) {
+      if (typeof o === 'string')
+        o = get(o, arguments.callee);
+      e.innerHTML = e.template.render(o);
+      e.hidden = false;
+    }
+    return e;
+}
 function appstore(p, e){
   return '<meta name="apple-itunes-app" content="app-id="'+p.n+'>';
 }
