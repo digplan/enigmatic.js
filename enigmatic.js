@@ -3,8 +3,8 @@ $$ = document.querySelectorAll.bind(document);
 Element.prototype.$ = Element.prototype.querySelector;
 Element.prototype.$$ = Element.prototype.querySelectorAll;
 
-Element.prototype.child = function(h) {
-  var e = document.createElement('div');
+Element.prototype.child = function(h, type) {
+  var e = document.createElement(type || 'div');
   if (h) e.innerHTML = h;
   this.appendChild(e);
   return e;
@@ -19,51 +19,6 @@ var load = function(s, cb) {
   i[css ? 'href' : 'src'] = s;
   console.log('loading ' + s);
   css && cb && cb();
-}
-
-var json2qs = function(o) {
-  if (typeof o !== 'object') return o;
-  var a = [];
-  for (i in o) a.push(i + '=' + o[i]);
-  return a.join('&');
-}
-
-var ajax = function(verb, u, d, cb) {
-  if(typeof window === 'undefined')  // node.js
-    var XMLHttpRequest = require('xhr2');
-  
-  var x = new XMLHttpRequest;
-  if (verb == 'GET') u = u + '?' + json2qs(d);
-  x.open(verb, u, true);
-  if (verb != 'GET') {
-    x.setRequestHeader('accept', 'application/json');
-    x.setRequestHeader('Content-type', 'application/json');
-    if (typeof d === 'object') d = JSON.stringify(d);
-  }
-  x.send(d);
-  x.onload = function(r) {
-    var resp = r.target.responseText;
-    try {
-      resp = JSON.parse(resp);
-    } catch (e) {}
-    (cb || console.log.bind(console))(resp, r.target.status);
-  };
-}
-
-var get = function(u, d, cb) {
-  return ajax('GET', u, d, cb);
-}
-var head = function(u, d, cb) {
-  return ajax('HEAD', u, d, cb);
-}
-var post = function(u, d, cb) {
-  return ajax('POST', u, d, cb)
-}
-var put = function(u, d, cb) {
-  return ajax('PUT', u, d, cb)
-}
-window.delete = function(u, d, cb) {
-  return ajax('DELETE', u, d, cb)
 }
 
 window.onload = function() {
@@ -98,15 +53,6 @@ function docontrols(parent) {
 }
 
 function setup() {
-  sliceNodes($$('[template]'), function(e) {
-    e.template = Hogan.compile(e.innerHTML);
-    e.render = function(o) {
-      if (typeof o === 'string')
-        o = get(o, arguments.callee);
-      e.innerHTML = e.template.render(o);
-      e.hidden = false;
-    }
-  })
   docontrols();
   window.ready && window.ready();
 }
