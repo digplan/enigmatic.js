@@ -7,9 +7,9 @@ Really simple web controls
 body [document.body]   
 $, $$  [querySelector, querySelectorAll]   
 load(javascript_src, callback)    
-Element.attr(name)  [get attribute value]
-Element.set(value)  [set value or innerHTML of various element types]
-Element.child(string, type)  [create element]
+Element.attr(name)  [get attribute value]    
+Element.set(value)  [set value or innerHTML of various element types]    
+Element.child(string, type)  [create element]    
 docontrols(parent)  [process controls under any element]    
 
 Attribute any element as a control.  Controls are defined in JS functions.
