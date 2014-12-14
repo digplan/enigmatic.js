@@ -1,13 +1,26 @@
+var enigmatic = {};
+enigmatic.version = '0.0.1';
+
 $ = document.querySelector.bind(document);
 $$ = document.querySelectorAll.bind(document);
+
 Element.prototype.$ = Element.prototype.querySelector;
 Element.prototype.$$ = Element.prototype.querySelectorAll;
-Element.prototype.child = function(h, type) {
-  var e = document.createElement(type || 'div');
-  if (h) e.innerHTML = h;
-  this.appendChild(e);
-  return e;
+Element.prototype.attr = function(name) {
+  return this.attributes.getNamedItem(name).value;
+};
+
+Element.prototype.set = function(s) {
+  return this[this.hasOwnProperty('value') ? 'value' : 'innerHTML'] = s;
 }
+
+Element.prototype.child = function(s, type) {
+  var e = document.createElement(type || 'div');
+  s && e.set(s);
+  return this.appendChild(e);
+}
+
+var body = document.body;
 
 function load(s, cb) {
   var css = s.match(/css$/);
@@ -20,30 +33,46 @@ function load(s, cb) {
   css && cb && cb();
 }
 
-function docontrols(parent) {
-  parent = parent || document.body;
-  Array.prototype.slice.call(parent.$$('[control]')).forEach(function(e) {
-    var o = {},
-      control = e.attributes['control'].value || e.tagName;
-    sliceNodes(e.attributes, function(a) {
-      o[a.nodeName] = a.value;
-    })
-    if (!window[control.toLowerCase()])
-      throw Error('no control definition ' + control);
+function json2qs(o) {
+  if (typeof o !== 'object') return o;
+  var a = [];
+  for (i in o) a.push(i + '=' + o[i]);
+  return a.join('&');
+}
 
-    // async
-    var res = window[control.toLowerCase()](o, e, function(res) {
-      if (typeof res === 'undefined' || !res) return;
-      typeof res === 'string' ? e.innerHTML = res : window[e.id] = res;
-    });
-    console.log(control, res);
+function sliceNodes(what, each) {
+  Array.prototype.slice.call(what).forEach(each);
+}
+
+function processcontrol(name, e) {
+  if (!window[name])
+    throw Error('no control definition ' + name);
+
+  console.log(name, e);
+
+  var res = window[name](e, function(res) {
     if (typeof res === 'undefined' || !res) return;
     typeof res === 'string' ? e.innerHTML = res : window[e.id] = res;
-    return;
+  });
+
+  if (typeof res === 'undefined' || !res) return;
+  typeof res === 'string' ? e.innerHTML = res : window[e.id] = res;
+}
+
+function docontrols(parent) {
+  parent = parent || document.body;
+  sliceNodes(parent.$$('[control]'), function(e) {
+    var o = {},
+      controls = e.attr('control') || e.tagName;
+    controls.split(' ').forEach(function(name) {
+      processcontrol(name.toLowerCase(), e);
+    });
   });
 }
 
-window.addEventListener('load', function() {
+function setup() {
   docontrols();
   window.ready && window.ready();
-});
+}
+
+window.onload = setup;
