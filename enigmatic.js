@@ -10,6 +10,17 @@ Element.prototype.attr = function(name) {
   return this.attributes.getNamedItem(name).value;
 };
 
+Element.prototype.controls = function() {
+  var parent = this;
+  sliceNodes(parent.$$('[control]'), function(e) {
+    var o = {},
+      controls = e.attr('control') || e.tagName;
+    controls.split(' ').forEach(function(name) {
+      processcontrol(name.toLowerCase(), e);
+    });
+  });
+}
+
 Element.prototype.set = function(s) {
   return this[this.hasOwnProperty('value') ? 'value' : 'innerHTML'] = s;
 }
@@ -59,19 +70,8 @@ function processcontrol(name, e) {
   typeof res === 'string' ? e.innerHTML = res : window[e.id] = res;
 }
 
-function docontrols(parent) {
-  parent = parent || document.body;
-  sliceNodes(parent.$$('[control]'), function(e) {
-    var o = {},
-      controls = e.attr('control') || e.tagName;
-    controls.split(' ').forEach(function(name) {
-      processcontrol(name.toLowerCase(), e);
-    });
-  });
-}
-
 function setup() {
-  docontrols();
+  document.body.controls();
   window.ready && window.ready();
 }
 
