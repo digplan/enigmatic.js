@@ -7,16 +7,18 @@ $$ = document.querySelectorAll.bind(document);
 Element.prototype.$ = Element.prototype.querySelector;
 Element.prototype.$$ = Element.prototype.querySelectorAll;
 Element.prototype.attr = function(name) {
-  return this.attributes.getNamedItem(name).value;
+  var node = this.attributes.getNamedItem(name);
+  return node ? node.value : null;
 };
 
 Element.prototype.controls = function() {
   var parent = this;
-  sliceNodes(parent.$$('[control]'), function(e) {
+  parent.$$('[control]').forEach(function(e) {
     var o = {},
-      controls = e.attr('control') || e.tagName;
+      controls = e.tagName + ' ' + e.attr('control');
     controls.split(' ').forEach(function(name) {
-      processcontrol(name.toLowerCase(), e);
+      var name = name.toLowerCase().trim();
+      if(name && !name.match(/input|div/)) processcontrol(name, e);
     });
   });
 }
@@ -30,6 +32,9 @@ Element.prototype.child = function(s, type) {
   s && e.set(s);
   return this.appendChild(e);
 }
+
+NodeList.prototype.forEach = Array.prototype.forEach;
+HTMLCollection.prototype.forEach = Array.prototype.forEach;
 
 var body = document.body;
 
@@ -51,11 +56,8 @@ function json2qs(o) {
   return a.join('&');
 }
 
-function sliceNodes(what, each) {
-  Array.prototype.slice.call(what).forEach(each);
-}
-
 function processcontrol(name, e) {
+
   if (!window[name])
     throw Error('no control definition ' + name);
 
