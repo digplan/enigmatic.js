@@ -20,12 +20,11 @@ Attribute any element as a control.  Controls are defined in JS functions.
   or this does the same: <div where='Chicago' control='mapstatic'></div>
 -->
 <script>
-  function mapstatic(e){
-    e.child('<img src=\"https://maps.googleapis.com/maps/api/staticmap?center='+e.attr('where')+'&zoom=13&size=600x300&maptype=roadmap\"/>');
-    // return string as innerHTML, or object and element id in callable in JS
+  function mapstatic(){
+    this.child('<img src=\"https://maps.googleapis.com/maps/api/staticmap?center='+e.attr('where')+'&zoom=13&size=600x300&maptype=roadmap\"/>');
   }
   
-  // optional - upon completion of processing
+  // optional - upon completion of processing controls
   function ready(){
     // do this
   }

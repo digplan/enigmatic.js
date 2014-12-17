@@ -1,5 +1,5 @@
 var enigmatic = {};
-enigmatic.version = '0.0.1';
+enigmatic.version = '0.0.2';
 
 $ = document.querySelector.bind(document);
 $$ = document.querySelectorAll.bind(document);
@@ -63,13 +63,8 @@ function processcontrol(name, e) {
 
   console.log(name, e);
 
-  var res = window[name](e, function(res) {
-    if (typeof res === 'undefined' || !res) return;
-    typeof res === 'string' ? e.innerHTML = res : window[e.id] = res;
-  });
-
-  if (typeof res === 'undefined' || !res) return;
-  typeof res === 'string' ? e.innerHTML = res : window[e.id] = res;
+  var res = window[name].call(e);
+  
 }
 
 function setup() {
