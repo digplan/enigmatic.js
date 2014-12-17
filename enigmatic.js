@@ -1,5 +1,5 @@
 var enigmatic = {};
-enigmatic.version = '0.0.2';
+enigmatic.version = '0.0.3';
 
 $ = document.querySelector.bind(document);
 $$ = document.querySelectorAll.bind(document);
@@ -21,6 +21,25 @@ Element.prototype.controls = function() {
       if(name && !name.match(/input|div/)) processcontrol(name, e);
     });
   });
+}
+
+Element.prototype.control = function(html, tag, attrs, classes) {
+  
+  var e = this.child(html, tag);
+  e.setAttribute('control', '');
+  
+  for (var name in attrs) {
+    e.setAttribute(name, attrs[name])
+  }
+
+  if(!classes) return e;
+
+  classes.split(' ').forEach(function(name) {
+    e.classList.add(name);
+  });
+
+  return e;
+
 }
 
 Element.prototype.set = function(s) {
@@ -63,8 +82,12 @@ function processcontrol(name, e) {
 
   console.log(name, e);
 
-  var res = window[name].call(e);
-  
+  var res = window[name].call(e, function(res) {
+    if(res) e.set(res);
+  });
+
+  if(res) e.set(res);
+
 }
 
 function setup() {
