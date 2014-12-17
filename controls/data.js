@@ -2,25 +2,26 @@
 // ondata applies a datachannel to an element, .dispatchData(obj)
 //  when used with datafrom='id.field', will receive data from that id
 
-function ondata(){
-
-  this.dispatchData = function(o){
-
-  	this.outdata = o;
-  	this.dispatchEvent(new CustomEvent('ondata'));
+function ondata() {
+  
+  this.dispatchData = function(o) {
     
+    this.outdata = o;
+    this.dispatchEvent(new CustomEvent('ondata'));
+  
   }
-
-  if(!this.attr('datafrom'))
-  	return;
-
+  
+  if (!this.attr('datafrom'))
+    return;
+  
   var arr = this.attr('datafrom').split('.');
-
-  $('#'+arr[0]).addEventListener('ondata', function(ev){
-
-  	var data = typeof arr[1] === 'undefined' ? ev.target.outdata : ev.target.outdata[arr[1]];
-    this.set(data);
-
+  
+  var datatarget = this;
+  $('#' + arr[0]).addEventListener('ondata', function(ev) {
+    
+    var data = typeof arr[1] === 'undefined' ? ev.target.outdata : ev.target.outdata[arr[1]];
+    datatarget.set(data);
+  
   });
 
 }
