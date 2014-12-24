@@ -44,6 +44,26 @@ Element.prototype.child = function(s, type, attrs, classes, style) {
   return this.appendChild(e);
 }
 
+Element.prototype.renderAll = function(obj) {
+  this.template = this.template || this.innerHTML;
+  var templ = this.template;
+  var htm = '', all = '';
+  obj.forEach(function(o){
+  	for(i in o)
+  	  htm = templ.replace('{{'+i+'}}', o[i]);
+  	all += htm;
+  });
+  this.innerHTML = all;
+  this.hidden = false;
+}
+
+Element.prototype.render = function(obj) {
+  this.template = this.template || this.innerHTML;
+  for(i in obj)
+  	this.innerHTML = this.template.replace('{{'+i+'}}', obj[i]);
+  this.hidden = false;
+}
+
 NodeList.prototype.forEach = Array.prototype.forEach;
 HTMLCollection.prototype.forEach = Array.prototype.forEach;
 
