@@ -1,5 +1,5 @@
 var enigmatic = {};
-enigmatic.version = '0.0.3';
+enigmatic.version = '0.0.4';
 
 $ = document.querySelector.bind(document);
 $$ = document.querySelectorAll.bind(document);
@@ -23,32 +23,24 @@ Element.prototype.controls = function() {
   });
 }
 
-Element.prototype.control = function(html, tag, attrs, classes) {
-  
-  var e = this.child(html, tag);
-  e.setAttribute('control', '');
-  
-  for (var name in attrs) {
-    e.setAttribute(name, attrs[name])
-  }
-
-  if(!classes) return e;
-
-  classes.split(' ').forEach(function(name) {
-    e.classList.add(name);
-  });
-
-  return e;
-
-}
-
 Element.prototype.set = function(s) {
   return this[this.hasOwnProperty('value') ? 'value' : 'innerHTML'] = s;
 }
 
-Element.prototype.child = function(s, type) {
+Element.prototype.child = function(s, type, attrs, classes, style) {
   var e = document.createElement(type || 'div');
   s && e.set(s);
+  
+  classes && classes.split(' ').forEach(function(cls){
+  	e.classList.add(cls);
+  });
+
+  for(i in (attrs || {}))
+  	e.setAttribute(i, attrs[i]);
+
+  for(i in (style || {}))
+  	e.style[i] = style[i];
+
   return this.appendChild(e);
 }
 
@@ -66,13 +58,6 @@ function load(s, cb) {
   i[css ? 'href' : 'src'] = s;
   console.log('loading ' + s);
   css && cb && cb();
-}
-
-function json2qs(o) {
-  if (typeof o !== 'object') return o;
-  var a = [];
-  for (i in o) a.push(i + '=' + o[i]);
-  return a.join('&');
 }
 
 function processcontrol(name, e) {
