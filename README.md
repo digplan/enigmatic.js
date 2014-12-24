@@ -11,7 +11,9 @@ load(javascript_src, callback)
 Element.attr(name)  [get attribute value]    
 Element.set(value)  [set value or innerHTML of various element types]    
 Element.child(s, type, attrs, classes, style) [create element]    
-Element.controls()  [process controls under any element]    
+Element.controls()  [process controls under any element]   
+Element.render(obj) [render element using innerHTML as template]
+Element.renderAll(arr)
 NodeList.forEach = Array.prototype.forEach;
 HTMLCollection.forEach = Array.prototype.forEach;    
 
