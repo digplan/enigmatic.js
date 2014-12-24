@@ -5,12 +5,15 @@ Really simple web controls
 
 ###Helpers
 body [document.body]   
-$, $$  [querySelector, querySelectorAll]   
+$, $$  [querySelector, querySelectorAll] 
+Element.$, $$  [querySelector, querySelectorAll] 
 load(javascript_src, callback)    
 Element.attr(name)  [get attribute value]    
 Element.set(value)  [set value or innerHTML of various element types]    
-Element.child(string, type)  [create element]    
-docontrols(parent)  [process controls under any element]    
+Element.child(s, type, attrs, classes, style) [create element]    
+Element.controls()  [process controls under any element]    
+NodeList.forEach = Array.prototype.forEach;
+HTMLCollection.forEach = Array.prototype.forEach;    
 
 Attribute any element as a control.  Controls are defined in JS functions.
 ````
