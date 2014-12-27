@@ -45,12 +45,14 @@ Element.prototype.child = function(s, type, attrs, classes, style) {
 }
 
 Element.prototype.renderAll = function(obj) {
-  this.template = this.template || this.innerHTML;
-  var templ = this.template;
-  var htm = '', all = '';
+  var t = this.template || this.innerHTML;
+  this.template = t;
+  this.innerHTML = '';
+  var all = '';
   obj.forEach(function(o){
+    var htm = t;
   	for(i in o)
-  	  htm = templ.replace('{{'+i+'}}', o[i]);
+  	  htm = htm.replace('{{'+i+'}}', o[i]);
   	all += htm;
   });
   this.innerHTML = all;
@@ -59,8 +61,10 @@ Element.prototype.renderAll = function(obj) {
 
 Element.prototype.render = function(obj) {
   this.template = this.template || this.innerHTML;
+  var all = this.template;
   for(i in obj)
-  	this.innerHTML = this.template.replace('{{'+i+'}}', obj[i]);
+  	all = all.replace('{{'+i+'}}', obj[i]);
+  this.innerHTML = all;
   this.hidden = false;
 }
 

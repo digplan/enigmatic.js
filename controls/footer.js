@@ -4,3 +4,4 @@ function footer(){
     this.child(items[i++], items[i]=='#' ? 'span':'a', {href: items[i]}); 
   }
 }
+  // body.child('', '', {items:'terms /terms privacy /privacy &#9731; # api /api contact /contact', control:'footer'});

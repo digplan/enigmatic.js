@@ -3,33 +3,34 @@ function autocomplete() {
   ondata.call(this);
 
   var e = this;
-  var size = this.attr('size');
+  var size = this.attr('size') || Error('no size');
   e.style.backgroundImage = "url("+this.attr('image')+")";
 
-  // override .set() for getting data
-  e.set = function(data){
+  // override .renderAll() for getting data
+  e.renderAll = function(data){
     this.data = data;
   }
 
-  var parent = body.child('', 'div');
-  parent.className = 'menu';
- 
+  this.style.position = 'relative';
+
+  var parent = this.parentElement.child();
+  parent.style.position = 'fixed';
+  parent.style.backgroundColor = 'white';
+  parent.style.opacity = '1';
+   
   for (var i = 0; i < size; i++) {
 
-    var item = parent.child('', 'div');
+    var item = parent.child();
     item.classList.add('acitem');
     item.hidden = true;
 
     item.onclick = function() {
-      e.value = this.obj.value;
-      e.style.backgroundImage = "url(" + this.icon + ")";
-      e.dispatchData(this.obj);
+      e.value = this.data.value;
+      e.dispatchData(this.data);
       parent.hidden = true;
     };
 
     e.onkeyup = function() {
-
-      var arr = this.data;
 
       if (!e.value) {
         e.style.backgroundImage = "url(api.png)";
@@ -39,10 +40,10 @@ function autocomplete() {
         return parent.hidden = true;
       }
 
-      var i = 0;
+      //var i = 0;
       parent.hidden = false;
 
-      var show = arr.slice(0)
+      var show = this.data
 
         .filter(function(i) {
           var ret = i.value.match(RegExp(e.value, 'i'));
@@ -53,19 +54,17 @@ function autocomplete() {
           return a > b;
         });
 
-      parent.children.forEach(function(item) {
-        if (!show.length) return item.hidden = true;
+      parent.children.forEach(function(itemdiv) {
+        if (!show.length) return itemdiv.hidden = true;
 
-        var results = show.shift();
-
+        var item = show.shift();
         var rx = new RegExp(e.value, 'i');
-        var txt = results.value.match(rx)[0];
-        item.set(results.value.replace(txt, '<b>' + txt + '</b>'));
-        item.style.backgroundImage = "url(" + results.icon + ")";
-        item.val = results.value;
-        item.icon = results.icon;
-        item.obj = results;
-        item.hidden = false;
+        var txt = item.value.match(rx)[0];
+        txt = item.value.replace(txt, '<b>' + txt + '</b>')
+
+        itemdiv.set('<i class="'+item.class+' left" style=""></i><div style="line-height:auto; margin-left:70px">'+item.value+'</div>');
+        itemdiv.data = item;
+        itemdiv.hidden = false;
 
       });
 
@@ -74,20 +73,3 @@ function autocomplete() {
   };
 
 }
-
-/* test
-body.innerHTML = '';
-var ac = body.child('', 'input');
-ac.id = 'yea';
-ac.setAttribute('control', 'autocomplete');
-ac.setAttribute('size', '3');
-ac.setAttribute('image', 'api.png');
-ac.style.width = '300px';
-ac.classList.add = 'autocomplete';
-ac.data = [{"value": "Microwallet","icon": "microwallet.png"},{"value": "Blockchain","icon": "blockchain.jpg"}];
-
-var catcher = body.control('', 'ondata', {datafrom: 'yea.value'});
-
-body.controls();
-
-*/
