@@ -1,29 +1,3 @@
-"use strict";
-
-function ondata() {
-  
-  this.dispatchData = function(o) {
-    
-    this.outdata = o;
-    this.dispatchEvent(new CustomEvent('ondata'));
-  
-  }
-  
-  if (!this.attr('datafrom'))
-    return;
-  
-  var arr = this.attr('datafrom').split('.');
-  
-  var datatarget = this;
-  $('#' + arr[0]).addEventListener('ondata', function(ev) {
-    
-    var data = typeof arr[1] === 'undefined' ? ev.target.outdata : ev.target.outdata[arr[1]];
-    datatarget.set(data);
-  
-  });
-
-}
-
 function editable() {
   
   ondata.call(this);

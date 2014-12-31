@@ -1,24 +1,25 @@
 function ondata() {
+  
   this.clients = [];
 
+  this.render = this.render || console.log.bind(console);
+  this.renderAll = this.renderAll || console.log.bind(console);
+
   this.dispatchData = function(o) {  
-    console.log('dispatchData', this, o);
-
     for(e in this.clients){
-      var a = this.clients[e];
+      var target = this.clients[e];
       var f = Array.isArray(o) ? 'renderAll' : 'render';
-      if(o[a[1]]) o = o[a[1]];
-      console.log(a[0], o);
-
-      a[0][f](o);
+      if(window.debug) console.log('dispatchData', target, o);
+      target[f](o);
     }
   }
   
-  var from = this.datafrom || this.attr('datafrom');
-  if (from){
-    var a = from.split('.');
-    $('#'+a[0]).clients.push([this, a[1]]);
+  this.datafrom = function(from){
+    if(!from) return;
+    var src = (typeof from === 'string') ? $('#'+from.split('.')[0]) : from;
+    src.clients.push(this);
   }
-}
 
-// usage: to extend other controls  ondata.call(this)
+  this.datafrom(this.attr && this.attr('datafrom'));
+
+}

@@ -17,23 +17,14 @@ function modal() {
 
 /* test
 
-body.innerHTML = "<link rel='stylesheet' href='//dpsw.info/css.css'>";
+body.innerHTML = '<a>link should be disabled</a>';
 
-body.child('random link should disable', 'a');
-
-e = body.child();
+var e = body.control('modal', {id: 'mymodal'}, "hey there Im modal<br><br>");
 e.hidden = true;
-e.id = 'mymodal';
-e.innerHTML = "hey there Im modal<br><br>";
 
-b=e.child('', 'button');
-b.innerHTML = "OK"
-b.classList.add('bg-green');
+var b = e.child('', 'button').classes('bg-green');
+b.innerHTML = 'OK';
 b.onclick=function(){ e.hide() }
-
-e.hidden = true;
-e.setAttribute('control', 'modal');
-body.controls();
 
 $('#mymodal').show();
 
