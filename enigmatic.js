@@ -1,5 +1,5 @@
 var enigmatic = {};
-enigmatic.version = '0.0.4';
+enigmatic.version = '0.0.6';
 
 $ = document.querySelector.bind(document);
 $$ = document.querySelectorAll.bind(document);
@@ -10,6 +10,14 @@ Element.prototype.attr = function(name) {
   var node = this.attributes.getNamedItem(name);
   return node ? node.value : null;
 };
+
+Element.prototype.control = function(name, attr, inner) {
+  attr = attr || {};
+  attr.control = '';
+  var e = this.child(inner || '', name, attr);
+  this.controls();
+  return e;
+}
 
 Element.prototype.controls = function() {
   var parent = this;
@@ -27,14 +35,17 @@ Element.prototype.set = function(s) {
   return this[this.hasOwnProperty('value') ? 'value' : 'innerHTML'] = s;
 }
 
-Element.prototype.child = function(s, type, attrs, classes, style) {
+Element.prototype.classes = function(s) {
+  s.split(' ').forEach(function(c){
+  	this.classList.add(c);
+  }.bind(this));
+  return this;
+}
+
+Element.prototype.child = function(s, type, attrs, style) {
   var e = document.createElement(type || 'div');
   s && e.set(s);
   
-  classes && classes.split(' ').forEach(function(cls){
-  	e.classList.add(cls);
-  });
-
   for(i in (attrs || {}))
   	e.setAttribute(i, attrs[i]);
 
@@ -49,12 +60,18 @@ Element.prototype.renderAll = function(obj) {
   this.template = t;
   this.innerHTML = '';
   var all = '';
-  obj.forEach(function(o){
-    var htm = t;
-  	for(i in o)
-  	  htm = htm.replace('{{'+i+'}}', o[i]);
-  	all += htm;
-  });
+
+  if(typeof Hogan !== 'undefined'){
+    all = Hogan.compile(t).render(obj);
+  } else {
+    obj.forEach(function(o){
+      var htm = t;
+  	  for(i in o)
+  	    htm = htm.replace('{{'+i+'}}', o[i]);
+  	  all += htm;
+    });
+  }
+
   this.innerHTML = all;
   this.hidden = false;
 }
@@ -62,8 +79,14 @@ Element.prototype.renderAll = function(obj) {
 Element.prototype.render = function(obj) {
   this.template = this.template || this.innerHTML;
   var all = this.template;
-  for(i in obj)
-  	all = all.replace('{{'+i+'}}', obj[i]);
+
+  if(typeof Hogan !== 'undefined'){
+    all = Hogan.compile(all).render(obj);
+  } else {
+    for(i in obj)
+  	  all = all.replace('{{'+i+'}}', obj[i]);
+  }
+
   this.innerHTML = all;
   this.hidden = false;
 }

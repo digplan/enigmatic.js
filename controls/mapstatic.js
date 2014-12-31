@@ -1,23 +1,14 @@
 function mapstatic(){
  
-    if(ondata)
-      ondata.call(this);
-
-    this.set = function(o){
-      this.innerHTML = '<img src="https://maps.googleapis.com/maps/api/staticmap?center='+o.where+'&zoom=13&size=600x300&maptype=roadmap">';
-    }
-
-    this.set({where: this.attr('where')});
+    ondata.call(this);
+    this.innerHTML = '<img src="https://maps.googleapis.com/maps/api/staticmap?center={{where}}&zoom=13&size=600x300&maptype=roadmap">';
+    this.attr('where') && this.render({where: this.attr('where')});
 
 }
 
 /* test 
 
-body.innerHTML = '';
-map = body.control('', 'mapstatic', {where:'chicago'}, 'two-high two');
-body.controls();
+body.innerHTML='';
+body.control('mapstatic', {where: 'vegas'})
 
-setTimeout(function(){
-  map.set({where: 'los angeles'});
-}, 3000);
 */

@@ -51,18 +51,7 @@ function ajax(){
   });
 }
 
-function eventsource(){
-  ondata.call(this);
-  var es = new EventSource(this.attr('href'));
-  es.onmessage = this.dispatchData.bind(this);
-}
-
-/*
-body.innerHTML = '{{data}}';
-var events = body.control('eventsource', {href:'//http-echo.com/stream'});
-ondata.call(body);
-body.datafrom(events);
-*/function appstore(){
+function appstore(){
   this.innerHTML = '<meta name="apple-itunes-app" content="app-id={{id}}">'.replace('{{id}}', this.attr('id'));
 }
 
@@ -180,6 +169,17 @@ var catcher = body.control('I catch data', 'ondata');
 catcher.setAttribute('datafrom', 'myedit');
 
 body.controls();
+*/function eventsource(){
+  ondata.call(this);
+  var es = new EventSource(this.attr('href'));
+  es.onmessage = this.dispatchData.bind(this);
+}
+
+/*
+body.innerHTML = '{{data}}';
+var events = body.control('eventsource', {href:'//http-echo.com/stream'});
+ondata.call(body);
+body.datafrom(events);
 */function fbcomments(){
 
   this.innerHTML = '<div class="fb-comments" href="dpsw.info"></div>'
@@ -264,26 +264,17 @@ body.controls();
   // body.child('', '', {items:'terms /terms privacy /privacy &#9731; # api /api contact /contact', control:'footer'});
 function mapstatic(){
  
-    if(ondata)
-      ondata.call(this);
-
-    this.set = function(o){
-      this.innerHTML = '<img src="https://maps.googleapis.com/maps/api/staticmap?center='+o.where+'&zoom=13&size=600x300&maptype=roadmap">';
-    }
-
-    this.set({where: this.attr('where')});
+    ondata.call(this);
+    this.innerHTML = '<img src="https://maps.googleapis.com/maps/api/staticmap?center={{where}}&zoom=13&size=600x300&maptype=roadmap">';
+    this.attr('where') && this.render({where: this.attr('where')});
 
 }
 
 /* test 
 
-body.innerHTML = '';
-map = body.control('', 'mapstatic', {where:'chicago'}, 'two-high two');
-body.controls();
+body.innerHTML='';
+body.control('mapstatic', {where: 'vegas'})
 
-setTimeout(function(){
-  map.set({where: 'los angeles'});
-}, 3000);
 */function menu() {
 
   document.addEventListener('click', function(ev) {
