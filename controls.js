@@ -311,3 +311,12 @@ function tweet() {
 }
 
 /* body.control('tweet', {status:'551046226699767808'}) */
+
+function youtube(){
+  ondata.call(this);
+  this.innerHTML = '<iframe height="100%" width="100%" src="//www.youtube.com/embed/{{id}}" frameborder="0" allowfullscreen></iframe>';
+  if (this.attr('id'))
+    this.render({ status: this.attr('id') });
+}
+
+/* body.control('youtube', {id:'zeVRcVlJ91w'}) */
