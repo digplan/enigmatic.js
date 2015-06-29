@@ -1,26 +1,8 @@
-function ajax(){
-  ondata.call(this);
-  var e = this;
-  AJAX.get(e.attr('href'), null, function(b){
-    try{
-      b = jsyaml.load(b);
-    } catch(e){}
-    e.dispatchData(b)
-  });
-}
-
-/*
-body.innerHTML = '{{msg}}';
-var events = body.control('ajax', {href:'//dpsw.info/data.json'});
-ondata.call(body);
-body.datafrom(events);
-*/
+/*  add a control - body.control('controlname') */
 
 function appstore(){
   this.innerHTML = '<meta name="apple-itunes-app" content="app-id='+this.attr('id')+'">';
 }
-
-/* body.control('appstore'); */
 
 function autocomplete() {
 
@@ -286,7 +268,7 @@ function ondata() {
   
   this.datafrom = function(from){
     if(!from) return;
-    var src = (typeof from === 'string') ? $('#'+from.split('.')[0]) : from;
+    var src = (typeof from === 'string') ? $$('#'+from.split('.')[0])[0] : from;
     src.clients.push(this);
   }
 
@@ -325,13 +307,10 @@ function youtube(){
 
 // enigmatic
 var enigmatic = {};
-enigmatic.version = '0.0.6';
+enigmatic.version = '2015.06.28';
 
-$ = document.querySelector.bind(document);
-$$ = document.querySelectorAll.bind(document);
-
-Element.prototype.$ = Element.prototype.querySelector;
-Element.prototype.$$ = Element.prototype.querySelectorAll;
+$ = document.querySelectorAll.bind(document);
+Element.prototype.$ = Element.prototype.querySelectorAll;
 Element.prototype.attr = function(name) {
   var node = this.attributes.getNamedItem(name);
   return node ? node.value : null;
