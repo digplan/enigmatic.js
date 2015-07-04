@@ -68,6 +68,9 @@ Element.prototype.child = function(s, type, attrs, style) {
 }
 /*  $('#mydiv').child('sometext', 'myclass', {attr1: '', attr2: ''}, {height:'100px'});  */
 
+if(!document.body)
+  document.write(' ');
+  
 var body = document.body;
 
 function load(s, cb) {
