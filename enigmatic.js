@@ -7,7 +7,7 @@ enigmatic.version = '2015.07.04-2';
 
 /*****************
  *    helpers
- */
+ */  
 
 var $ = document.querySelectorAll.bind(document);
 /*  $('#id').innerHTML = 'some html'  */
