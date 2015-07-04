@@ -75,7 +75,7 @@ var body = document.body;
 
 function load(s, cb) {
   var css = s.match(/css$/);
-  var i = body.appendChild(document.createElement(css ? 'link' : 'script'));
+  var i = document.body.appendChild(document.createElement(css ? 'link' : 'script'));
   i.onload = cb;
   if (css)
     css.rel = "stylesheet";
