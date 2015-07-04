@@ -3,7 +3,7 @@
  */
      
 var enigmatic = {};
-enigmatic.version = '2015.07.04';
+enigmatic.version = '2015.07.04-2';
 
 /*****************
  *    helpers
@@ -38,13 +38,15 @@ Element.prototype.control = function(name, attr, inner) {
 /*  create control:  document.body.control('youtube', {watch: 'xxxxxx'})  */
 
 Element.prototype.controls = function() {
-  var parent = this;
-  parent.$('[control]').forEach(function(e) {
+  this.$('[control]').forEach(function(e) {
     var o = {},
       controls = e.tagName + ' ' + e.attr('control');
     controls.split(' ').forEach(function(name) {
       var name = name.toLowerCase().trim();
-      if(name && !name.match(/input|div/)) processcontrol(name, e);
+      if(!name || name.match(/input|div/)) return;
+      var res = window[name].call(e, function(res) {
+        if(res) e.set(res);
+      });
     });
   });
 }
@@ -54,14 +56,6 @@ Element.prototype.set = function(s) {
   return this[this.hasOwnProperty('value') ? 'value' : 'innerHTML'] = s;
 }
 /*  $('#myinput').set('value');  $('#mydiv').set('value');  */
-
-Element.prototype.classes = function(s) {
-  s.split(' ').forEach(function(c){
-  	this.classList.add(c);
-  }.bind(this));
-  return this;
-}
-/*  $('#myinput').classes('classone classtwo');  */
 
 Element.prototype.child = function(s, type, attrs, style) {
   var e = document.createElement(type || 'div');
@@ -74,11 +68,6 @@ Element.prototype.child = function(s, type, attrs, style) {
 }
 /*  $('#mydiv').child('sometext', 'myclass', {attr1: '', attr2: ''}, {height:'100px'});  */
 
-
-/*****************
- *    process controls
- */
- 
 var body = document.body;
 
 function load(s, cb) {
@@ -93,21 +82,15 @@ function load(s, cb) {
 }
 /*  load('script.js', callback)  */
 
-function processcontrol(name, e) {
-  if (!window[name])
-    throw Error('no control definition ' + name);
-  console.log(name, e);
-  var res = window[name].call(e, function(res) {
-    if(res) e.set(res);
-  });
-  if(res) e.set(res);
-}
-/*  process controls  */
+/*****************
+ *    start - process controls
+ */
 
 window.onload = function setup() {
   document.body.controls();
   window.ready && window.ready();
 };
+
 /*  function ready(){
       // optional, called wnen controls processing is complete
     }
@@ -117,6 +100,27 @@ window.onload = function setup() {
 /*****************
  *    controls
  */
+
+function ondata() {
+  this.clients = [];
+  this.render = this.render || console.log.bind(console);
+  this.renderAll = this.renderAll || console.log.bind(console);
+  this.dispatchData = function(o) {  
+    for(e in this.clients){
+      var target = this.clients[e];
+      var f = Array.isArray(o) ? 'renderAll' : 'render';
+      if(window.debug) console.log('dispatchData', target, o);
+      target[f](o);
+    }
+  }
+  this.datafrom = function(from){
+    if(!from) return;
+    var src = (typeof from === 'string') ? $('#'+from.split('.')[0])[0] : from;
+    src.clients.push(this);
+  }
+  this.datafrom(this.attr && this.attr('datafrom'));
+}
+/* ondata.call(this)  */
 
 function appstore(){
   this.innerHTML = '<meta name="apple-itunes-app" content="app-id='+this.attr('id')+'">';
@@ -340,27 +344,6 @@ function modal() {
      <button class='bg-green' onclick='parentElement.hide()'>OK</button>  
    </modal>
 */
-
-function ondata() {
-  this.clients = [];
-  this.render = this.render || console.log.bind(console);
-  this.renderAll = this.renderAll || console.log.bind(console);
-  this.dispatchData = function(o) {  
-    for(e in this.clients){
-      var target = this.clients[e];
-      var f = Array.isArray(o) ? 'renderAll' : 'render';
-      if(window.debug) console.log('dispatchData', target, o);
-      target[f](o);
-    }
-  }
-  this.datafrom = function(from){
-    if(!from) return;
-    var src = (typeof from === 'string') ? $('#'+from.split('.')[0])[0] : from;
-    src.clients.push(this);
-  }
-  this.datafrom(this.attr && this.attr('datafrom'));
-}
-/* ondata.call(this)  */
 
 function soundcloud() {
   this.innerHTML = '<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{id}}&amp;color=ff6600&amp;auto_play=false&amp;show_artwork=true"></iframe>';
