@@ -1,7 +1,7 @@
 /*****************
  *    enigmatic
  */
- 
+   
 var enigmatic = {};
 enigmatic.version = '2015.07.04';
 
