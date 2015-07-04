@@ -89,7 +89,7 @@ function load(s, cb) {
  *    start - process controls
  */
 
-document.body.onload = function setup() {
+window.onload = function setup() {
   document.body.controls();
   window.ready && window.ready();
 };
