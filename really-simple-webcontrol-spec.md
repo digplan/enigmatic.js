@@ -1,6 +1,6 @@
 ##Description
 The "really simple webcontrol" standard defines a HTML element to javascript function binding.    
-The result is simple web components, based on simply an HTML DOM element decorated by JS functionality.  
+The result is a technique for simple web components, based on an HTML DOM element activated by JS functionality.  
     
 The goal is to provide a very approachable and easy to implement web controls functionality.    
 A reference implentation (just a few lines of JavaScript) and Hello World control is included.    
@@ -19,31 +19,13 @@ This is an example of a helloworld control, with a parameter of name, value of "
 <script>
 
   function helloworld(){
-    this.innerHTML = 'Hello ' + this.attr('name');
+    this.innerHTML = 'Hello ' + this.attributes.getNamedItem('name').value;
   }
 
 </script>
 ````
 
 Displays **hello me** on the page.    
-    
-Here's an example, with a control that implements more than one names.
-
-````
-<helloworld name='me' control='makeblue'>
-
-<script>
-
-  function helloworld(){
-    this.innerHTML = 'Hello ' + this.attr('name');
-  }
-
-  function makeblue(){
-  	this.style.color = 'blue';
-  }
-  
-</script>
-````
     
 Async operations can be done like this.
 
