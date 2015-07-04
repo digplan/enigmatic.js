@@ -346,8 +346,7 @@ function modal() {
 */
 
 function soundcloud() {
-  this.innerHTML = '<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{id}}&amp;color=ff6600&amp;auto_play=false&amp;show_artwork=true"></iframe>';
-  this.attr('id') && this.render({id: this.attr('id')});
+  this.innerHTML = '<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/'+this.attr('id')+'&amp;color=ff6600&amp;auto_play=false&amp;show_artwork=true"></iframe>';
 }
 /* <soundcloud id='231314412' control> */
 
