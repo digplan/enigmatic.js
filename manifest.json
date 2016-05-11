@@ -1,0 +1,16 @@
+{
+  "name": "enigmatic.js",
+  "version": "2016.05.11",
+  "manifest_version": 2,
+  "description": "",
+  "homepage_url": "https://github.com/digplan/enigmatic.js",
+  "icons": {},
+  "permissions": [
+    "activeTab"
+  ],
+  "content_scripts": [{
+    "matches": ["http://*/*", "https://*/*"],
+    "js": ["chrome_loader.js"]
+  }],
+  "web_accessible_resources": ["enigmatic.js"]
+}
