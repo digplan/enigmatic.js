@@ -1,7 +1,7 @@
 /*****************
  *    controls
  */
-window.controls = {version: '2016.05.28'};
+window.controls = {version: '2016.05.28-2'};
 
 function appstore(){
   this.innerHTML = '<meta name="apple-itunes-app" content="app-id='+this.attr('id')+'">';
@@ -251,7 +251,7 @@ function soundcloud() {
   var w = this.attr("width");
   var h = this.attr("height");
   var id = this.attr("id");
-  this.innerHTML = `<iframe width="${w}" height="${h}" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/${id}&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>`;
+  this.innerHTML = `<iframe sandbox="allow-same-origin allow-scripts allow-popups allow-forms" width="${w}" height="${h}" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/${id}&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>`;
   //this.attr('id') && this.render({id: this.attr('id')});
 }
 /* <soundcloud id='231314412' control> */
