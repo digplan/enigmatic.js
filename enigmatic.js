@@ -2,7 +2,7 @@
  *    enigmatic
  */
 var enigmatic = {};
-enigmatic.version = '2016.05.13';
+enigmatic.version = '2016.05.28';
 
 /*****************
  *    helpers
