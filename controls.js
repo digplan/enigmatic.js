@@ -1,7 +1,7 @@
 /*****************
  *    controls
  */
-var controls = {version: '2016.05.15'};
+var controls = {version: '2016.05.28'};
 
 function appstore(){
   this.innerHTML = '<meta name="apple-itunes-app" content="app-id='+this.attr('id')+'">';
