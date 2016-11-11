@@ -1,275 +1,416 @@
-/*****************
- *    controls
- */
-window.controls = {version: '2016.05.28-2'};
+ // Controls
 
-function appstore(){
-  this.innerHTML = '<meta name="apple-itunes-app" content="app-id='+this.attr('id')+'">';
+  window.modal = function() {
+    loadcss('', `
+<style>
+modal {
+  box-shadow: 2px 2px 2px #999999;
+  padding: 20px;
 }
-/*  <appstore id='123123123' control>  */
-
-function autocomplete() {
-
-  ondata.call(this);
-  var e = this;
-  var size = this.attr('size') || Error('no size');
-  e.style.backgroundImage = "url("+this.attr('image')+")";
-
-  // override .renderAll() for getting data
-  e.renderAll = function(data){
-    this.data = data;
-  }
-
-  this.style.position = 'relative';
-
-  var parent = this.parentElement.child();
-  parent.style.position = 'fixed';
-  parent.style.backgroundColor = 'white';
-  parent.style.opacity = '1';
-   
-  for (var i = 0; i < size; i++) {
-
-    var item = parent.child();
-    item.classList.add('acitem');
-    item.hidden = true;
-
-    item.onclick = function() {
-      e.value = this.data.value;
-      e.dispatchData(this.data);
-      parent.hidden = true;
-    };
-
-    e.onkeyup = function() {
-
-      if (!e.value) {
-        e.style.backgroundImage = "url(api.png)";
-        parent.children.forEach(function(c) {
-          c.hidden = true;
-        });
-        return parent.hidden = true;
-      }
-
-      //var i = 0;
-      parent.hidden = false;
-
-      var show = this.data
-
-        .filter(function(i) {
-          var ret = i.value.match(RegExp(e.value, 'i'));
-          return ret;
-        })
-
-        .sort(function(a, b) {
-          return a > b;
-        });
-
-      parent.children.forEach(function(itemdiv) {
-        if (!show.length) return itemdiv.hidden = true;
-
-        var item = show.shift();
-        var rx = new RegExp(e.value, 'i');
-        var txt = item.value.match(rx)[0];
-        txt = item.value.replace(txt, '<b>' + txt + '</b>')
-
-        itemdiv.set('<i class="'+item.class+' left" style=""></i><div style="line-height:auto; margin-left:70px">'+item.value+'</div>');
-        itemdiv.data = item;
-        itemdiv.hidden = false;
-
-      });
-
-    }
-
-  };
-
+.overlay {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fcfcfc;
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+    z-index:1000;
 }
-/*  <autocomplete id='123123123' control>  */
-
-function editable() {
-  
-  ondata.call(this);
-
-  this.onclick = function(ev) {
-    this.innerHTML = '<input value="{{v}}" />'.replace('{{v}}', this.innerHTML);
-    this.onclick = null;
-    ev.stopImmediatePropagation();
-  }
-  
-  var e = this;
-  function save() {
-    if (e.children.length)
-      e.innerHTML = e.children[0].value;
-    e.onclick = function(ev) {
-      e.innerHTML = '<input value="{{v}}" />'.replace('{{v}}', e.innerHTML);
-      e.onclick = null;
-      ev.stopImmediatePropagation();
-    }
-    e.dispatchData(e.innerHTML);
-  }
-  
-  e.onkeyup = function(ev) {
-    ev.keyCode == 13 && save();
-  }
-
-}
-/*  <editable control>  */
-
-function eventsource(){
-  ondata.call(this);
-  var es = new EventSource(this.attr('href'));
-  es.onmessage = this.dispatchData.bind(this);
-}
-/*  <eventsource id='mydata' href='/feed' control>  */
-
-function fbcomments(){
-  this.innerHTML = '<div class="fb-comments" href="'+this.attr("url")+'"></div>'
-  load('http://connect.facebook.net/en_US/all.js#xfbml=1');
-}
-/*  <fbcomments url='dpsw.info' control>  */
-
-function feedburner() {
-  this.innerHTML = '<form style="border:1px solid #ccc;padding:3px;text-align:center;" '+
-  	'action="http://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow"'+
-  	' onsubmit="window.open(\'http://feedburner.google.com/fb/a/mailverify?uri='+this.attr("name")+
-  	'\', \'popupwindow\', \'scrollbars=yes,width=550,height=520\');return true"><p>Enter your email '+
-	'address:</p><p><center><input type="text" style="width:240px" name="email"/></center>'+
-	'</p><input type="hidden" value="'+this.attr("name")+'" name="uri"/><input type="hidden" name="loc" '+
-	'value="en_US"/><input type="submit" value="Subscribe" /></form>';
-}
-/*  <feedburner name='electronicdj' control>  */
-
-function footer(){
-  var items = this.attr('items').split(' ');
-  for(var i=0; i<items.length; i++){
-    this.child(items[i++], items[i]=='#' ? 'span':'a', {href: items[i]}); 
-  }
-}
-/*  <footer items='terms /terms privacy /privacy &#9731; # api /api contact /contact' control>  */
-
-function gcomments() {
-  this.innerHTML = '<div class="g-comments" data-href="'+location.href+'" data-width="642" data-first_party_property="BLOGGER" data-view_type="FILTERED_POSTMOD"></div>';
-  load('https://apis.google.com/js/plusone.js');
-}
-/* <gcomments control>  */
-
-function header(){
-  var items = this.attr('items').split(' ');
-  for(var i=0; i<items.length; i++){
-    this.child(items[i++], items[i]=='#' ? 'span':'a', {href: items[i]}); 
-  }
-}
-
-/* <header items='terms /terms privacy /privacy &#9731; # api /api contact /contact' control>  */
-
-function mapstatic(){
-    ondata.call(this);
-    this.innerHTML = '<img src="https://maps.googleapis.com/maps/api/staticmap?center={{where}}&zoom=13&size=600x300&maptype=roadmap">';
-    //this.attr('where') && this.render({where: this.attr('where')});
-}
-/*  <mapstatic where='vegas' control>  */
-
-function menu() {
-  document.addEventListener('click', function(ev) {
-    this.hidden = true;
-  }.bind(this));
-  this.hidden = true;
-  var e = this.parentElement.nodeName == 'BODY' ? document : this.parentElement;
-  e.addEventListener('click', function(ev) {
-    this.hidden = false;
-    ev.stopPropagation();
-  }.bind(this));
-}
-/*  <menu control>  */
-
-function contextmenu() {
-  document.addEventListener('click', function(ev) {
-    this.hidden = true;
-  }.bind(this));
-  this.hidden = true;
-  document.addEventListener('mousemove', function(e) {
-    window.cpos = [e.pageX, e.pageY];
-  });
-  var e = this.parentElement.nodeName == 'BODY' ? document : this.parentElement;
-  e.oncontextmenu = function(ev) {
-    this.hidden = false;
-    var pos = window.cpos;
-    this.style.top = pos[1]-30 + 'px';
-    this.style.left = pos[0]-30 + 'px';
-    ev.stopPropagation();
-    return false;
-  }.bind(this);
-}
-/* <contextmenu control>
-     <li>hey there</li>
-     <li>hey there 2</li>
-   </contextmenu>  
-*/
-
-function modal() {
-  this.classList.add('center-screen');
-  this.style.zIndex = 1001;
-  var overlay = body.child('');
+</style>`);
+    
+    this.classList.add('center-screen');
+    this.style.zIndex = 1001;
+    var overlay = document.body.child();
     overlay.classList.add('overlay');
     overlay.hidden = true;
-  var me = this;
-  this.show = function(){ 
-    overlay.hidden = false;
-    document.onkeyup=function(k){k.keyCode==13 && me.hide(); };
+    var me = this;
+    this.show = function() {
+      overlay.hidden = false;
+      me.hidden = false;
+      document.onkeyup = function(k) {
+        if(k.keyCode == 13) me.hide();
+      };
+    };
+    this.hide = function() {
+      overlay.hidden = me.hidden = true;
+    };
+    this.hidden = true;
   };
-  this.hide = function(){
-    overlay.hidden = me.hidden = true; 
-  };
-  this.hidden = false;
-}
-/* <modal id='mymodal'>
-     hey there Im modal<br><br>
-     <button class='bg-green' onclick='parentElement.hide()'>OK</button>  
-   </modal>
-*/
 
-function ondata() {
-  this.clients = [];
-  this.render = this.render || console.log.bind(console);
-  this.renderAll = this.renderAll || console.log.bind(console);
-  this.dispatchData = function(o) {  
-    for(e in this.clients){
-      var target = this.clients[e];
-      var f = Array.isArray(o) ? 'renderAll' : 'render';
-      if(window.debug) console.log('dispatchData', target, o);
-      target[f](o);
+  window.menu = function(o){
+    loadcss('', `
+      <style>
+        menu * {
+          box-shadow: 1px #999999;
+          padding: 4px;
+          list-style-type:none;
+          min-width:140px;
+          max-width:130px;
+          display: block;
+          clear: both;
+          cursor:default;
+          background-color: white;
+          margin-left: -20px
+        }
+        menu *:hover {
+          text-decoration:none;
+          color: white;
+          background-color: #dddddd;
+        }
+        menu > li {
+          color:yellow;  
+        }
+      </style>
+    `);
+    var me = this;
+    var trigger = $('#'+o.for)[0];
+    trigger.onclick = function(){
+      me.hidden = !me.hidden;
+    };
+    me.hidden = true;
+  };
+
+  window.contextmenu = function(o) {
+    loadcss('', `
+<style>
+contextmenu * {
+  box-shadow: 1px #999999;
+  padding: 6px;
+  list-style-type:none;
+  min-width:140px;
+  max-width:300px;
+  display: block;
+  clear: both;
+  cursor:default;
+  background-color: white;
+}
+contextmenu *:hover {
+  text-decoration:none;
+  color: white;
+  background-color: #dddddd;
+}
+</style>`);
+
+    document.addEventListener('click', function(ev) {
+      this.hidden = true;
+    }.bind(this));
+    document.addEventListener('mousemove', function(e) {
+      window.cpos = [e.pageX, e.pageY];
+    });
+    var me = this;
+    window.oncontextmenu = function(ev) {
+      me.hidden = false;
+      var pos = window.cpos;
+      me.style.position = 'fixed';
+      me.style.top = pos[1] - 30 + 'px';
+      me.style.left = pos[0] - 30 + 'px';
+      ev.stopPropagation();
+      return false;
+    };
+    this.hidden = true;
+  };
+
+  window.gcomments = function(){
+    this.innerHTML = `
+      <script src="https://apis.google.com/js/plusone.js"></script>
+      <div id="comments"></div>
+      gapi.comments.render('comments', {
+          href: window.location,
+          width: '624',
+          first_party_property: 'BLOGGER',
+          view_type: 'FILTERED_POSTMOD'
+      });
+    `;
+  };
+  
+  window.fbcomments = function(o) {
+    this.innerHTML = `<div class="fb-comments" data-href="${location.href}" data-numposts="2"></div>`;
+    load(`//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=${o.appid}`);
+  };
+  
+  window.login = function(){
+    loadcss('', `
+<style>
+
+login {
+  position: fixed;
+  background-color: red;
+  height: 40px;
+  width: 40px;
+}
+
+.loggedin {
+  background-color: green;
+}
+</style>`);
+    
+    var img = this.child('img');
+    var me = this;
+    (function(){
+      var t = arguments.callee;
+      me.classList.remove('loggedin');
+      var name = localStorage.getItem('user');
+      me.onclick = function(){
+        localStorage.setItem('user', 'cb');
+        t();
+      };
+      img.src = 'https://www.iconexperience.com/_img/o_collection_png/green_dark_grey/512x512/plain/user.png';
+      if(!name) return;
+      
+      img.src = 'https://d1avok0lzls2w.cloudfront.net/img_uploads/changing-urls-0(2).jpg';
+      me.classList.add('loggedin');
+      me.onclick = function(){
+        localStorage.removeItem('user');
+        t();
+      };
+    })();
+  };
+  window.mapstatic = function(o){
+    this.innerHTML = `<img src="https://maps.googleapis.com/maps/api/staticmap?center=${o.where}&zoom=${o.zoom||13}&size=600x300">`;
+  };
+  window.views = function(o){
+    var v = this;
+    window._onviewchange = [];
+    for(var ls = document.links, numLinks = ls.length, i=0; i<numLinks; i++){
+      ls[i].onclick= (function(t, ch){
+         return function(){
+           var showid = t.split('/').pop();
+           history.pushState({}, 'test', t);
+           for(var i=0; i<ch.length; i++){
+             ch[i].hidden = (showid != ch[i].id);
+           }
+           window._onviewchange.forEach(function(f){
+             f(showid);
+           });
+           return false;
+         };
+      })(ls[i].href, v.children);
     }
-  }
-  this.datafrom = function(from){
-    if(!from) return;
-    var src = (typeof from === 'string') ? $('#'+from.split('.')[0])[0] : from;
-    src.clients.push(this);
-  }
-  this.datafrom(this.attr && this.attr('datafrom'));
-}
-/* ondata.call(this)  */
+    
+  };
+  window.logger = function(){
+    loadcss('', `
+      <style>
+        logger {
+          position: fixed;
+          bottom: 0%;
+          border: 1px #dbdbdb solid;
+          padding: 10px;
+          width: 100%;
+          height:20%;
+          background-color: #ddd;
+          left: 0;
+          font-family: Courier;
+          font-size:14px;
+          overflow:scroll;
+          padding: 16px;
+        }
+      </style>
+    `);
+    var me = this;
+    window._log = function(s){
+      s = JSON.stringify(s);
+      me.innerHTML += `${s}</br>`;
+      me.scrollTop = me.scrollHeight;
+    };
+  };
+  window.value = function(o){
+    loadcss('', `
+      <style>
+        value:focus {
+          outline: #dbdbdb solid thick;
+        }
+      </style>
+    `);
+    var me = this, k = o.data;
+    me.setValue = function(s){
+      me.innerHTML = s;
+    };
+    me.onkeypress = function(e){
+      return e.which != 13;
+    };
+    me.onblur = function(){ 
+      data[k] = me.innerText;
+    };
+  };
+  window.datahandler = function(o){
+    var k = this.getAttribute('data');
+    this.setValue = function(v){
+      var x = new XMLHttpRequest();
+      x.open('GET', `https://httpbin.org/get?${k}=${v}`, false);
+      x.send(null);
+      _log(x.responseText);
+    };
+  };
+  window.metube = function(o){
+    this.innerHTML = `
+      <link rel=stylesheet href=http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css>
+      <style>
+        metube > div {
+         background-color: #e52d27;  
+         width:100%;
+         height:100%;
+        }
+        #metube_header span {
+           color:white;
+           margin: 20px;
+        }
+        #metube_header span:hover {
+           color:black;
+        }
+        #metube_body {
+           background-color: gray;
+           height:70%;
+        }
+      </style>
+      <div id=metubeapp>
+        <div id=metube_header>
+          <span>Metube Red</span>
+          <span class=ion-android-home>
+          <span class=ion-flame>
+          <span class=ion-information-circled>
+        </div>
+        <div id=metube_body>
 
-function soundcloud() {
-  var w = this.attr("width");
-  var h = this.attr("height");
-  var id = this.attr("id");
-  this.innerHTML = `<iframe sandbox="allow-same-origin allow-scripts allow-popups allow-forms" width="${w}" height="${h}" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/${id}&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>`;
-  //this.attr('id') && this.render({id: this.attr('id')});
+        </div>
+      </div>`;
+  };
+  window.notification = function(o){
+    Notification.requestPermission();
+    this.setValue = function(s){
+      new Notification(s);
+    };
+  };
+  window.colors = function(o){
+    loadcss('',`
+<style>
+.bg-navy {
+  background-color: #001f3f
 }
-/* <soundcloud id='231314412' control> */
-
-function tweet() {  
-  ondata.call(this);
-  this.innerHTML = "<blockquote class='twitter-tweet'><a href='https://twitter.com/{{user}}/statuses/{{status}}'></a></blockquote>";
-  if (this.attr('status'))
-    this.render({ status: this.attr('status') });
-
-  load('//platform.twitter.com/widgets.js');
+.bg-blue {
+  background-color: #0074d9
 }
-/* <tweet status='551046226699767808' control> */
-
-function youtube(){
-  ondata.call(this);
-  this.innerHTML = '<iframe height="100%" width="100%" src="//www.youtube.com/embed/{{id}}" frameborder="0" allowfullscreen></iframe>';
-  if (this.attr('watch'))
-    this.render({ status: this.attr('watch') });
+.bg-aqua {
+  background-color: #7fdbff
 }
-/*  <youtube watch='zeVRcVlJ91w' control>  */
+.bg-teal {
+  background-color: #39cccc
+}
+.bg-olive {
+  background-color: #3d9970
+}
+.bg-green {
+  background-color: #2ecc40
+}
+.bg-lime {
+  background-color: #01ff70
+}
+.bg-yellow {
+  background-color: #ffdc00
+}
+.bg-orange {
+  background-color: #ff851b
+}
+.bg-red {
+  background-color: #ff4136
+}
+.bg-fuchsia {
+  background-color: #f012be
+}
+.bg-purple {
+  background-color: #b10dc9
+}
+.bg-maroon {
+  background-color: #85144b
+}
+.bg-white {
+  background-color: #fff
+}
+.bg-gray {
+  background-color: #aaa
+}
+.bg-silver {
+  background-color: #ddd
+}
+.bg-black {
+  background-color: #111
+}
+.navy {
+  color: #001f3f
+}
+.blue {
+  color: #0074d9
+}
+.aqua {
+  color: #7fdbff
+}
+.teal {
+  color: #39cccc
+}
+.olive {
+  color: #3d9970
+}
+.green {
+  color: #2ecc40
+}
+.lime {
+  color: #01ff70
+}
+.yellow {
+  color: #ffdc00
+}
+.orange {
+  color: #ff851b
+}
+.red {
+  color: #ff4136
+}
+.fuchsia {
+  color: #f012be
+}
+.purple {
+  color: #b10dc9
+}
+.maroon {
+  color: #85144b
+}
+.white {
+  color: #fff !important
+}
+.silver {
+  color: #ddd
+}
+.gray {
+  color: #aaa
+}
+.black {
+  color: #111
+}
+</style>`);
+  };
+
+window.youtube = function(o) {
+  this.innerHTML = `
+    <iframe height="${o.height}" 
+            width="${o.width}" 
+            src="//www.youtube.com/embed/${o.watch}" 
+            frameborder="0" 
+            allowfullscreen>
+    </iframe>`;
+};
+
+window.ajax = function(u, v, d, cb){
+  var x = new XMLHttpRequest();
+  x.open(v, u, false);
+  x.send();
+  cb(x.responseText);
+}
+window.firebase = function(o){
+  var k = o.data, db = o.db;
+  this.setValue = function(v){
+     window.ajax(`https://${db}.firebaseio.com/${k}.json`, 'POST');
+  };
+}
+
