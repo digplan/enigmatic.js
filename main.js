@@ -41,15 +41,7 @@
 
   window.onload = function() {
     $('[control]').forEach(function(e) {
-      var o = {};
-      if(e.hasAttributes) {
-        var attrs = e.attributes;
-        for(var i = attrs.length - 1; i >= 0; i--) {
-          o[attrs[i].name] = attrs[i].value;
-        }
-      }
       var ename = e.tagName.toLowerCase();
-      console.log(`loading ${ename}`);
       window[ename].call(e, o);
     });
     ready();
