@@ -18,10 +18,10 @@
   //  o.id = id;
   
   window.load = function(s, cb) {
-    var i = document.body.appendChild(document.createElement('script'));
-    i.onload = cb;
-    i.src = s;
-    if(cb) cb();
+    var script = document.createElement('script');
+    script.onload = cb;
+    script.src = s;
+    document.getElementsByTagName('head')[0].appendChild(script);
   };
   
   window.loadcss = function(s, src){
@@ -50,9 +50,9 @@
 
 function ready(){
 
-   window._onviewchange.push(function(name){
-     _log(`view changed to ${name}`);
-   });
+   window._onviewchange = (n) => {
+     console.log(`view changed to ${n}`);
+   };
  
    setInterval(function(){
      data.currenttime = new Date();

@@ -1,42 +1,52 @@
- // Controls
+// Controls
 
   window.modal = function() {
     loadcss('', `
 <style>
 modal {
-  box-shadow: 2px 2px 2px #999999;
-  padding: 20px;
-}
-.overlay {
-    position: fixed; 
-    top: 0;
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: #fcfcfc;
-    opacity: 0.8;
-    filter: alpha(opacity=80);
-    z-index:1000;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
 }
 </style>`);
     
-    this.classList.add('center-screen');
-    this.style.zIndex = 1001;
-    var overlay = document.body.child();
-    overlay.classList.add('overlay');
-    overlay.hidden = true;
-    var me = this;
-    this.show = function() {
-      overlay.hidden = false;
-      me.hidden = false;
-      document.onkeyup = function(k) {
-        if(k.keyCode == 13) me.hide();
-      };
-    };
-    this.hide = function() {
-      overlay.hidden = me.hidden = true;
-    };
-    this.hidden = true;
+  var me = this;
+  this.open = function() {
+    me.style.display = "block";
+  };
+  this.close = function() {
+    me.style.display = "none";
+  };
+
   };
 
   window.menu = function(o){
@@ -75,54 +85,49 @@ modal {
   window.contextmenu = function(o) {
     loadcss('', `
 <style>
-contextmenu * {
+contextmenu {
+  display: hidden;
+}
+contextmenu li {
   box-shadow: 1px #999999;
   padding: 6px;
   list-style-type:none;
   min-width:140px;
   max-width:300px;
-  display: block;
   clear: both;
   cursor:default;
   background-color: white;
 }
-contextmenu *:hover {
-  text-decoration:none;
-  color: white;
-  background-color: #dddddd;
+contextmenu li:hover {
+  background-color: #dbdbdb;
 }
 </style>`);
 
-    document.addEventListener('click', function(ev) {
-      this.hidden = true;
-    }.bind(this));
-    document.addEventListener('mousemove', function(e) {
-      window.cpos = [e.pageX, e.pageY];
-    });
     var me = this;
+    document.addEventListener('click', function(ev) {
+      me.style.display = 'none';
+    });
     window.oncontextmenu = function(ev) {
-      me.hidden = false;
+      me.style.display = 'block';
       var pos = window.cpos;
       me.style.position = 'fixed';
-      me.style.top = pos[1] - 30 + 'px';
-      me.style.left = pos[0] - 30 + 'px';
+      me.style.top = `${ev.clientY}px`;
+      me.style.left = `${ev.clientX-30}px`;
       ev.stopPropagation();
       return false;
     };
-    this.hidden = true;
   };
 
   window.gcomments = function(){
-    this.innerHTML = `
-      <script src="https://apis.google.com/js/plusone.js"></script>
-      <div id="comments"></div>
+    this.innerHTML = `<div id="comments"></div>`;
+    load('https://apis.google.com/js/plusone.js', () => {
       gapi.comments.render('comments', {
           href: window.location,
           width: '624',
           first_party_property: 'BLOGGER',
           view_type: 'FILTERED_POSTMOD'
       });
-    `;
+    })
   };
   
   window.fbcomments = function() {
@@ -171,26 +176,27 @@ login {
     var where = this.getAttribute('where');
     this.innerHTML = `<img src="https://maps.googleapis.com/maps/api/staticmap?center=${where}&zoom=${this.getAttribute('zoom')||13}&size=600x300">`;
   };
-  window.views = function(o){
-    var v = this;
-    window._onviewchange = [];
+  
+  window.views = function(){
     for(var ls = document.links, numLinks = ls.length, i=0; i<numLinks; i++){
-      ls[i].onclick= (function(t, ch){
+      // Clicking a link will push state
+      ls[i].onclick= (function(linktarget){
          return function(){
-           var showid = t.split('/').pop();
-           history.pushState({}, 'test', t);
-           for(var i=0; i<ch.length; i++){
-             ch[i].hidden = (showid != ch[i].id);
-           }
-           window._onviewchange.forEach(function(f){
-             f(showid);
+           var path = linktarget.split('/').pop();
+           history.pushState({}, '', path);
+           // Hide views other than selected
+           $('views > view').forEach((view)=>{
+             view.style.display = view.id == path ? '' : 'none';
+             view.hidden = false;
            });
+           if(window._onviewchange) window._onviewchange(path);
            return false;
          };
-      })(ls[i].href, v.children);
+         // link target
+      })(ls[i].href);
     }
-    
   };
+  
   window.logger = function(){
     loadcss('', `
       <style>
@@ -211,7 +217,7 @@ login {
       </style>
     `);
     var me = this;
-    window._log = function(s){
+    window.onerror = console.log = function(s){
       s = JSON.stringify(s);
       me.innerHTML += `${s}</br>`;
       me.scrollTop = me.scrollHeight;
@@ -225,7 +231,7 @@ login {
         }
       </style>
     `);
-    var me = this, k = o.data;
+    var me = this, k = this.getAttribute('data');
     me.setValue = function(s){
       me.innerHTML = s;
     };
@@ -242,7 +248,7 @@ login {
       var x = new XMLHttpRequest();
       x.open('GET', `https://httpbin.org/get?${k}=${v}`, false);
       x.send(null);
-      _log(x.responseText);
+      console.log(x.responseText);
     };
   };
   window.metube = function(o){
@@ -394,9 +400,9 @@ login {
 
 window.youtube = function(o) {
   this.innerHTML = `
-    <iframe height="${o.height}" 
-            width="${o.width}" 
-            src="//www.youtube.com/embed/${o.watch}" 
+    <iframe height="${this.getAttribute('height')}" 
+            width="${this.getAttribute('width')}" 
+            src="//www.youtube.com/embed/${this.getAttribute('watch')}" 
             frameborder="0" 
             allowfullscreen>
     </iframe>`;
@@ -407,11 +413,11 @@ window.ajax = function(u, v, d, cb){
   x.open(v, u, false);
   x.send();
   cb(x.responseText);
-}
+};
 window.firebase = function(o){
-  var k = o.data, db = o.db;
+  var k = this.getAttribute('data'), db = this.getAttribute('db');
   this.setValue = function(v){
      window.ajax(`https://${db}.firebaseio.com/${k}.json`, 'POST');
   };
-}
+};
 

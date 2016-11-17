@@ -23,7 +23,7 @@
  </div>
   
  <views control>
-   <view></view>
+   <view>home view</view>
    <view id=gcomments hidden>
       <gcomments control></gcomments>
    </view>
@@ -34,10 +34,13 @@
       <mapstatic where=60118 zoom=14 control></mapstatic>
    </view>
    <view id=modal hidden>
-     <button onclick='$("#mymodal")[0].show();'>Show modal</button>
+      <button id="myBtn" onclick='$("#mymodal")[0].open()'>Open Modal</button>
       <modal id=mymodal control>
-        hey there Im modal<br><br>
-        <button class='bg-green' onclick='parentElement.hide()'>OK</button>  
+          <!-- Modal content -->
+          <div class="modal-content">
+            <span class="close" onclick='$("#mymodal")[0].close()'>×</span>
+            <p>Some text in the Modal..</p>
+          </div>
       </modal>
    </view>
    <view id=login hidden>
@@ -54,9 +57,9 @@
      </menu>
    </view>
    <view id=contextmenu hidden>
-     </contextmenu control>
-     <li><span href="#" onClick="alert(1)">Alert</a></li>
-     <li><span href="#" onClick="alert(2)">Alert 2</a></li>
+     <contextmenu control>
+       <li><span href="#" onClick="alert(1)">Alert</a></li>
+       <li><span href="#" onClick="alert(2)">Alert 2</a></li>
      </contextmenu>
    </view> 
    <view id=data hidden>

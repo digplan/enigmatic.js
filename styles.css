@@ -237,10 +237,9 @@ img {
 }
 .center-screen {
   position: fixed;
-  top: 36%;
+  top: 50%;
   left: 50%;
-  margin-top: -50px;
-  margin-left: -100px;
+  transform: translate(-50%, -50%);
 }
 .full-page {
   min-height: 100%;
