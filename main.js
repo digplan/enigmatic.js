@@ -42,7 +42,7 @@
   window.onload = function() {
     $('[control]').forEach(function(e) {
       var ename = e.tagName.toLowerCase();
-      window[ename].call(e, o);
+      window[ename].call(e);
     });
     ready();
   };

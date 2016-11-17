@@ -65,7 +65,7 @@ modal {
       </style>
     `);
     var me = this;
-    var trigger = $('#'+o.for)[0];
+    var trigger = $('#'+ this.getAttribute('for'))[0];
     trigger.onclick = function(){
       me.hidden = !me.hidden;
     };
@@ -125,9 +125,9 @@ contextmenu *:hover {
     `;
   };
   
-  window.fbcomments = function(o) {
+  window.fbcomments = function() {
     this.innerHTML = `<div class="fb-comments" data-href="${location.href}" data-numposts="2"></div>`;
-    load(`//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=${o.appid}`);
+    load(`//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=${this.getAttribute('appid')}`);
   };
   
   window.login = function(){
@@ -167,8 +167,9 @@ login {
       };
     })();
   };
-  window.mapstatic = function(o){
-    this.innerHTML = `<img src="https://maps.googleapis.com/maps/api/staticmap?center=${o.where}&zoom=${o.zoom||13}&size=600x300">`;
+  window.mapstatic = function(){
+    var where = this.getAttribute('where');
+    this.innerHTML = `<img src="https://maps.googleapis.com/maps/api/staticmap?center=${where}&zoom=${this.getAttribute('zoom')||13}&size=600x300">`;
   };
   window.views = function(o){
     var v = this;
@@ -235,7 +236,7 @@ login {
       data[k] = me.innerText;
     };
   };
-  window.datahandler = function(o){
+  window.datahandler = function(){
     var k = this.getAttribute('data');
     this.setValue = function(v){
       var x = new XMLHttpRequest();
