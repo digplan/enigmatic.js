@@ -16,7 +16,6 @@
    <a href=/enigmatic.js-2/login >Login</a>
    <a href=/enigmatic.js-2/menu >menu</a>
    <a href=/enigmatic.js-2/contextmenu >context menu</a>
-   <a href=/enigmatic.js-2/data >data</a>
    <a href=/enigmatic.js-2/metube >metube</a>
    <a href=/enigmatic.js-2/notification >notification</a>
    <a href=/enigmatic.js-2/youtube >youtube</a>
@@ -27,12 +26,15 @@
    <view id=gcomments hidden>
       <gcomments control></gcomments>
    </view>
+   
    <view id=fbcomments hidden>
       <fbcomments appid=447217612050727 control></fbcomments>
    </view>
+   
    <view id=mapstatic hidden>
       <mapstatic where=60118 zoom=14 control></mapstatic>
    </view>
+   
    <view id=modal hidden>
       <button id="myBtn" onclick='$("#mymodal")[0].open()'>Open Modal</button>
       <modal id=mymodal control>
@@ -43,9 +45,11 @@
           </div>
       </modal>
    </view>
+   
    <view id=login hidden>
       <login control></login>
    </view> 
+   
    <view id=menu hidden>
      <a id=item1 href=#>Click me</a>
      <menu for=item1 control>
@@ -56,40 +60,30 @@
        <li><span href="#" onClick="alert(1)">Alert 5</a></li>
      </menu>
    </view>
+   
    <view id=contextmenu hidden>
      <contextmenu control>
        <li><span href="#" onClick="alert(1)">Alert</a></li>
        <li><span href="#" onClick="alert(2)">Alert 2</a></li>
      </contextmenu>
    </view> 
-   <view id=data hidden>
-     <value data=currenttime control>Loading..</value><br/>
-     <value data=incme control></value>
-     <button onclick='data.incme++'>Increment</button><br/>
-     
-     <input data=myname onkeyup='data.myname=this.value'/>
-     Val: <value data=myname control></value>
-     <datahandler data=myname control/><br/><br/>
-     
-     Editable: 
-     <value data=myname2 contenteditable control>edit me</value>
-     <br/>
-     Val: <value data=myname2 control></value>
-     
-   </view> 
+
    <view id=metube hidden>
      <metube control/>
    </view>
+   
    <view id=notification hidden>
      <input data=nvalue value='Hi there' onblur='data.nvalue=this.value'>
      <notification data=nvalue control/>
    </view>
+   
    <view id=youtube hidden>
      <youtube height='200px' width='500px' watch='ftVxOTGkLpc' control>
    </view>
  </views>
 <colors control/>
 
+<script src='controls-data.js'></script>
 <script src='controls.js'></script>
 <script src='main.js'></script>
 </body>

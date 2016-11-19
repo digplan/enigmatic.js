@@ -1,22 +1,5 @@
 (function(){
   
-  window.data = new Proxy({}, {
-    set: function(target, property, value, receiver) {
-      $('[data]').forEach(function(e){
-         var de = e.getAttribute('data');
-         if(de == property && e.setValue) 
-           e.setValue(value);
-      });
-      target[property] = value;
-    },
-    get: function(target, property, receiver){
-      return target[property];
-    }
-  });
-  //  o.hash = (o).hash();
-  //  var id = new Date().getTime()+Math.random();
-  //  o.id = id;
-  
   window.load = function(s, cb) {
     var script = document.createElement('script');
     script.onload = cb;
@@ -38,14 +21,23 @@
     var e = document.createElement(type||'div');
     return this.appendChild(e);
   };
-
-  window.onload = function() {
+  window.ajax = {
+    get: function(url, cb){
+      var x = new XMLHttpRequest();
+      x.open('GET', url, false);
+      x.send(null);
+      if(cb) cb(x.responseText);  
+    }
+  };
+  
+  window.onload = function(){
     $('[control]').forEach(function(e) {
       var ename = e.tagName.toLowerCase();
       window[ename].call(e);
     });
     ready();
   };
+  
 })();
 
 function ready(){

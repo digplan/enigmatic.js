@@ -223,34 +223,7 @@ login {
       me.scrollTop = me.scrollHeight;
     };
   };
-  window.value = function(o){
-    loadcss('', `
-      <style>
-        value:focus {
-          outline: #dbdbdb solid thick;
-        }
-      </style>
-    `);
-    var me = this, k = this.getAttribute('data');
-    me.setValue = function(s){
-      me.innerHTML = s;
-    };
-    me.onkeypress = function(e){
-      return e.which != 13;
-    };
-    me.onblur = function(){ 
-      data[k] = me.innerText;
-    };
-  };
-  window.datahandler = function(){
-    var k = this.getAttribute('data');
-    this.setValue = function(v){
-      var x = new XMLHttpRequest();
-      x.open('GET', `https://httpbin.org/get?${k}=${v}`, false);
-      x.send(null);
-      console.log(x.responseText);
-    };
-  };
+
   window.metube = function(o){
     this.innerHTML = `
       <link rel=stylesheet href=http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css>
