@@ -21,34 +21,20 @@
     var e = document.createElement(type||'div');
     return this.appendChild(e);
   };
-  window.ajax = {
-    get: function(url, cb){
+  
+  window.ajax = function(v, url, d, cb){
       var x = new XMLHttpRequest();
       x.open('GET', url, false);
-      x.send(null);
+      x.send(d);
       if(cb) cb(x.responseText);  
-    }
-  };
+ };
   
   window.onload = function(){
     $('[control]').forEach(function(e) {
       var ename = e.tagName.toLowerCase();
       window[ename].call(e);
     });
-    ready();
+    if(ready) ready();
   };
   
 })();
-
-function ready(){
-
-   window._onviewchange = (n) => {
-     console.log(`view changed to ${n}`);
-   };
- 
-   setInterval(function(){
-     data.currenttime = new Date();
-   },1000);
-
-   data.incme = 0;
-}
