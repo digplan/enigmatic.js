@@ -34,7 +34,7 @@
       var ename = e.tagName.toLowerCase();
       window[ename].call(e);
     });
-    if(ready) ready();
+    if(window.ready) window.ready();
   };
   
 })();
