@@ -1,90 +1,23 @@
 <!DOCTYPE html>
-<!--  Test 11-4-2  -->
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <link rel="shortcut icon" href="http://4vector.com/i/free-vector-internet-icon_101765_Internet_Icon.png"/>
-</head>
-<body id='mybody' class='container'>
- <logger control></logger>
- <div>
-   <a href=/enigmatic.js-2/fbcomments >FB Comments</a>
-   <a href=/enigmatic.js-2/gcomments >G Comments</a>
-   <a href=/enigmatic.js-2/mapstatic >Mapstatic</a>
-   <a href=/enigmatic.js-2/modal >Modal</a>
-   <a href=/enigmatic.js-2/login >Login</a>
-   <a href=/enigmatic.js-2/menu >menu</a>
-   <a href=/enigmatic.js-2/contextmenu >context menu</a>
-   <a href=/enigmatic.js-2/metube >metube</a>
-   <a href=/enigmatic.js-2/notification >notification</a>
-   <a href=/enigmatic.js-2/youtube >youtube</a>
- </div>
+<script src=enigmatic.js></script>
+
+<testcontrol id=mycontrol control ></testcontrol>
+
+<div>I am an ajax response</div>
+<pre id=ajaxresp></pre>
   
- <views control>
-   <view>home view</view>
-   <view id=gcomments hidden>
-      <gcomments control></gcomments>
-   </view>
-   
-   <view id=fbcomments hidden>
-      <fbcomments appid=447217612050727 control></fbcomments>
-   </view>
-   
-   <view id=mapstatic hidden>
-      <mapstatic where=60118 zoom=14 control></mapstatic>
-   </view>
-   
-   <view id=modal hidden>
-      <button id="myBtn" onclick='$("#mymodal")[0].open()'>Open Modal</button>
-      <modal id=mymodal control>
-          <!-- Modal content -->
-          <div class="modal-content">
-            <span class="close" onclick='$("#mymodal")[0].close()'>×</span>
-            <p>Some text in the Modal..</p>
-          </div>
-      </modal>
-   </view>
-   
-   <view id=login hidden>
-      <login control></login>
-   </view> 
-   
-   <view id=menu hidden>
-     <a id=item1 href=#>Click me</a>
-     <menu for=item1 control>
-       <li><span href="#" onClick="alert(1)">Alert 1</a></li>
-       <li><span href="#" onClick="alert(1)">Alert 2</a></li>
-       <li><span href="#" onClick="alert(1)">Alert 3</a></li>
-       <li><span href="#" onClick="alert(1)">Alert 4</a></li>
-       <li><span href="#" onClick="alert(1)">Alert 5</a></li>
-     </menu>
-   </view>
-   
-   <view id=contextmenu hidden>
-     <contextmenu control>
-       <li><span href="#" onClick="alert(1)">Alert</a></li>
-       <li><span href="#" onClick="alert(2)">Alert 2</a></li>
-     </contextmenu>
-   </view> 
+<script>
 
-   <view id=metube hidden>
-     <metube control/>
-   </view>
-   
-   <view id=notification hidden>
-     <input data=nvalue value='Hi there' onblur='data.nvalue=this.value'>
-     <notification data=nvalue control/>
-   </view>
-   
-   <view id=youtube hidden>
-     <youtube height='200px' width='500px' watch='ftVxOTGkLpc' control>
-   </view>
- </views>
-<colors control/>
-
-<script src='controls-data.js'></script>
-<script src='controls.js'></script>
-<script src='main.js'></script>
-</body>
-</html>
+  enig.preready = () => {
+    enig.testcontrol = (e) => {
+      e.innerHTML = 'I am a test control';
+    }
+  }
+  
+  enig.ready = () => {
+    enig.ajax('GET', `https://httpbin.org/get?a=1`, null, (resp) => {
+      window.ajaxresp.innerHTML = resp;
+    });
+  }
+  
+</script>

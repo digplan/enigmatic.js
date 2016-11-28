@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<script src=../enigmatic.js></script>
+<script src=menu.js></script>
+
+<button id=btn onclick='mymenu.toggle()'>Toggle menu</button>
+<menu id=mymenu for=btn control>
+    <li onclick="alert(1)">Alert One</li>
+    <li onclick="alert(2)">Alert Two</li>
+    <li onclick="alert(3)">Alert Three</li>
+    <li onclick="alert(4)">Alert Four</li>
+</menu>
+
+<menu id=mymenu2 contextmenu control>
+    <li onclick="alert(1)">C Alert One</li>
+    <li onclick="alert(2)">C Alert Two</li>
+    <li onclick="alert(3)">C Alert Three</li>
+    <li onclick="alert(4)">C Alert Four</li>
+</menu>

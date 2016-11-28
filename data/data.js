@@ -1,6 +1,4 @@
-  window.$ = document.querySelectorAll.bind(document);
-  NodeList.prototype.forEach = Array.prototype.forEach;
-  HTMLCollection.prototype.forEach = Array.prototype.forEach;
+
   cln = function(v, e){
     for(i in v){
       var ch = e.querySelector(`[data=${i}`);
