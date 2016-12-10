@@ -32,7 +32,7 @@
       if(cb) cb(x.responseText);  
  };
   
-  window.onload = function(){
+  window.onload = enig.process = function(){
     if(enig.preready) enig.preready();
     $('[control]').forEach(function(e) {
       var ename = e.tagName.toLowerCase();
