@@ -25,12 +25,17 @@
     return this.appendChild(e);
   };
   
-  enig.ajax = function(v, url, d, cb){
+  enig.ajax = function(v, url, d, cb, headers){
       var x = new XMLHttpRequest();
-      x.open(v, url, false);
-      x.send(d);
-      cb(x.responseText);
- };
+      x.open(v, url, true);
+      if(headers)
+        for(var k in headers) x.setRequestHeader(k, headers[k]);
+      if(v == 'GET') d = null;
+      x.send(v == 'GET' ? null:d);
+      x.onload = (r) => {
+        cb(r.target.responseText, x.getAllResponseHeaders(), x.status);
+      }
+  };
   
   window.onload = enig.process = function(){
     if(enig.preready) enig.preready();
