@@ -27,9 +27,9 @@
   
   enig.ajax = function(v, url, d, cb){
       var x = new XMLHttpRequest();
-      x.open('GET', url, true);
+      x.open(v, url, false);
       x.send(d);
-      if(cb) cb(x.responseText);  
+      cb(x.responseText);
  };
   
   window.onload = enig.process = function(){
