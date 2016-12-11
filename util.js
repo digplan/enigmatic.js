@@ -1,5 +1,5 @@
 enig.util = {};
-enig.util.twodarray(arr) {
+enig.util.twodarray = (arr) => {
   var keys=arr.shift();
   return arr.map((i)=>{
     var o={};
