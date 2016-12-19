@@ -1,9 +1,12 @@
 /*
-<autocomplete id=myac data='ac' max=9 placeholder='Name' control>
-  <img src=${logourl} /> ${value}<br><span class='twelve blue'>${desc}</span>
-</autocomplete>
+    <autocomplete id=myac data='apilist' max=9 placeholder='API' control>
+      <span>${value}</span><br> 
+      <span class='twelve magenta'>${Method}</span>
+      <a target=_ href='${Info}'><i class='ion-ios-information-outline'></i></a>
+    </autocomplete>
+    
+    myac.onselected = (o) => alert(o);
 */
-
 enig.autocomplete = e => {
   e.style.position = 'relative';
   e.value = '';
@@ -15,6 +18,7 @@ enig.autocomplete = e => {
   input.onkeyup = ev => e.value = input.value;
   var max = e.getAttribute('max');
   e.setValue = data => {
+    e.data = data;
     [].slice.call(myac.children).splice(1).forEach(e => e.remove());
     data.forEach(item => {
       var ch = e.child();
@@ -30,6 +34,8 @@ enig.autocomplete = e => {
       ch.onclick = () => {
         e.value = input.value = ch.value;
         myac.querySelectorAll('div:not([hidden])').forEach(e => e.hidden = true);
+        if(e.onselected) 
+          e.onselected.call(e, e.data.filter(item => item.value==e.value)[0]);
       }
       ch.hidden = true;
     })
