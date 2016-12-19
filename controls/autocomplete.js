@@ -16,6 +16,7 @@ enig.autocomplete = e => {
   input.setAttribute('placeholder', e.getAttribute('placeholder'));
   input.style.padding = '6px';
   input.onkeyup = ev => e.value = input.value;
+  input.onclick = () => input.select();
   var max = e.getAttribute('max');
   e.setValue = data => {
     e.data = data;
@@ -23,35 +24,39 @@ enig.autocomplete = e => {
     data.forEach(item => {
       var ch = e.child();
       ch.style.backgroundColor = 'white';
-      ch.style.opacity = '0.8';
       ch.style.width = e.offsetWidth+'px';
       ch.innerHTML = e.template.replace(/\${[^}]*}/g, o => item[o.replace(/\$|{|}/g,'')]);
       ch.value = item.value;
+      ch.style.position = 'absolute';
       ch.style.cursor = 'default';
-      ch.style.padding = '6px'
+      ch.style.padding = '6px';
       ch.onmouseover = () => ch.style.backgroundColor = '#dbdbdb';
       ch.onmouseout = () =>  ch.style.backgroundColor = 'white';
       ch.onclick = () => {
         e.value = input.value = ch.value;
-        myac.querySelectorAll('div:not([hidden])').forEach(e => e.hidden = true);
+        myac.querySelectorAll('div').forEach(e => e.style.display = 'none');
         if(e.onselected) 
           e.onselected.call(e, e.data.filter(item => item.value==e.value)[0]);
       }
-      ch.hidden = true;
+      ch.style.display = 'none';
     })
   }
   e.onkeyup = ev => {
     if(ev.keyCode == 27){
-      myac.querySelectorAll('div:not([hidden])').forEach(e => e.hidden = true);
+      myac.querySelectorAll('div').forEach(e => e.style.display = 'none');
       return input.value = '';
     }
-    var x = 0;
+    if(ev.keyCode == 13) return;
+    var x = 0; var hpos = input.offsetHeight;
     [].slice.call(e.children, 1).forEach(ch => {
-      if(ch.value.match(input.value, 'i') && x < max && e.value){
-        ch.hidden = false;
+      var rx = new RegExp(input.value, 'i');
+      if(ch.value.match(rx) && x < max && e.value){
+        ch.style.display = 'block';
+        ch.style.top = `${hpos}px`;
+        hpos += ch.offsetHeight;
         x++;
       } else {
-        ch.hidden = true;
+        ch.style.display = 'none';
       }
     });
   }
