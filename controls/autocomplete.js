@@ -7,7 +7,7 @@
 enig.autocomplete = e => {
   e.style.position = 'relative';
   e.value = '';
-  e.template = e.innerHTML;
+  e.template = e.innerHTML || '${value}';
   e.innerHTML = '';
   var input = e.child('input');
   input.setAttribute('placeholder', e.getAttribute('placeholder'));
