@@ -47,7 +47,7 @@ enig.autocomplete = e => {
     }
     var x = 0;
     [].slice.call(e.children, 1).forEach(ch => {
-      if(ch.value.match(input.value) && x < max && e.value){
+      if(ch.value.match(input.value, 'i') && x < max && e.value){
         ch.hidden = false;
         x++;
       } else {
