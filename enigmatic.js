@@ -50,7 +50,7 @@
     });
     if(enig.ready) enig.ready();
   };
-  enig.loadedScripts = [];
+
   window.enig = enig;
   
 })();
