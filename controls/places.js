@@ -5,7 +5,6 @@
 enig.places = (e)=>{
   enig.load(`https://maps.googleapis.com/maps/api/js?key=${e.getAttribute('api-key')}&libraries=places`, ()=>{
     var input = e.child('input');
-    input.id = 'placecontrol';
     input.style.width = '100%';
     input.style.height = '100%';
     input.onclick = () => input.select();
