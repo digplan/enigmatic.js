@@ -5,9 +5,9 @@
   
   enig.load = function(s, cb) {
     if(enig.loadedScripts[s]) return console.log(s + ' already loaded');
+    enig.loadedScripts[s] = true;
     var script = document.createElement('script');
     script.onload = () => {
-      enig.loadedScripts[s] = true;
       if(cb) cb();
     }
     script.src = s;
