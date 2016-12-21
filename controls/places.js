@@ -13,7 +13,7 @@ enig.places = (e)=>{
     var ac = new google.maps.places.Autocomplete(input, {types: ['geocode']});
     ac.addListener('place_changed', () => e.onselected(ac.getPlace()));
   }
-  if(typeof google !== 'undefined' || !google.maps || !google.maps.places)
+  if(typeof google == 'undefined' || !google.maps || !google.maps.places)
     return proc();
   enig.load(`https://maps.googleapis.com/maps/api/js?key=${e.getAttribute('api-key')}&libraries=places`, proc);
 }
