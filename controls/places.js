@@ -13,7 +13,11 @@ enig.places_cb = () => {
     if (ev.keyCode == 27) input.value = '';
   }
   var ac = new google.maps.places.Autocomplete(input, { types: ['geocode'] });
-  ac.addListener('place_changed', () => e.onselected(ac.getPlace()));
+  ac.addListener('place_changed', () => {
+    e.selected = ac.getPlace();
+    if(e.onselected)
+      e.onselected(ac.getPlace());
+  });
   if (enig.places.count.length) enig.places_cb();
 }
 
