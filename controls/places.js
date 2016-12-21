@@ -3,7 +3,6 @@
   myplaces.onselected = (e) => alert(JSON.stringify(e));
 */
 enig.places = (e)=>{
-  function proc() {
     var input = e.child('input');
     input.id = 'placecontrol';
     input.style.width = '100%';
@@ -12,8 +11,4 @@ enig.places = (e)=>{
     input.onkeyup = (ev) => { if(ev.keyCode == 27) input.value = ''; }
     var ac = new google.maps.places.Autocomplete(input, {types: ['geocode']});
     ac.addListener('place_changed', () => e.onselected(ac.getPlace()));
-  }
-  if(typeof google !== 'undefined' && google.maps && google.maps.places)
-    return proc();
-  enig.load(`https://maps.googleapis.com/maps/api/js?key=${e.getAttribute('api-key')}&libraries=places`, proc);
 }
