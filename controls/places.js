@@ -2,7 +2,6 @@
   <places id=myplaces api-key=AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk control></places>
   myplaces.onselected = (e) => alert(JSON.stringify(e));
 */
-
 enig.places = (e)=>{
   function proc() {
     var input = e.child('input');
