@@ -4,7 +4,11 @@
   enig.loadedScripts = {};
   
   enig.load = function(s, cb) {
-    if(enig.loadedScripts[s]) return console.log(s + ' already loaded');
+    if(enig.loadedScripts[s]){
+       console.log(s + ' already loaded');
+       if(cb) cb();
+       return;
+    }
     enig.loadedScripts[s] = true;
     var script = document.createElement('script');
     script.onload = () => {
