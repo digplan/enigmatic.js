@@ -1,10 +1,15 @@
 (function(){
   
   var enig = {};
+  enig.loadedScripts = {};
   
   enig.load = function(s, cb) {
+    if(enig.loadedScripts[s]) return console.log(s + ' already loaded');
     var script = document.createElement('script');
-    script.onload = cb;
+    script.onload = () => {
+      enig.loadedScripts[s] = true;
+      if(cb) cb();
+    }
     script.src = s;
     document.getElementsByTagName('head')[0].appendChild(script);
   };
@@ -45,7 +50,7 @@
     });
     if(enig.ready) enig.ready();
   };
-  
+  enig.loadedScripts = [];
   window.enig = enig;
   
 })();
