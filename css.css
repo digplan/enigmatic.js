@@ -9,6 +9,8 @@
   font-family: "Roboto"
 }
 
+a {text-decoration: none}
+
 div, span {
   font-family: 'Roboto', sans-serif;
 }
