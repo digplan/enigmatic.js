@@ -4,8 +4,15 @@
       <span class='twelve magenta'>${Method}</span>
       <a target=_ href='${Info}'><i class='ion-ios-information-outline'></i></a>
     </autocomplete>
-    
     myac.onselected = (o) => alert(o);
+    
+    with ajax query:
+    myac.keyup = function(kv, cb){
+      enig.ajax('GET',`https://autocomplete.clearbit.com/v1/companies/suggest?query=${e.value}`, null, (o)=>{
+        myac.setValue(o);
+        cb();
+      });
+    }
 */
 enig.autocomplete = e => {
   e.style.position = 'relative';
@@ -47,10 +54,14 @@ enig.autocomplete = e => {
       return input.value = '';
     }
     if(ev.keyCode == 13) return;
+    if(e.keyup) return e.keyup(ev, e.onku.bind(this, ev));
+    e.onku(ev);
+  }
+  e.onku = function(ev){
     var x = 0; var hpos = input.offsetHeight;
     [].slice.call(e.children, 1).forEach(ch => {
       var rx = new RegExp(input.value, 'i');
-      if(ch.value.match(rx) && x < max && e.value){
+      if(true || (ch.value.match(rx) && x < max && e.value)){
         ch.style.display = 'block';
         ch.style.top = `${hpos}px`;
         hpos += ch.offsetHeight;
