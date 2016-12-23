@@ -20,7 +20,7 @@ enig.autocomplete = e => {
   var max = e.getAttribute('max');
   e.setValue = data => {
     e.data = data;
-    [].slice.call(myac.children).splice(1).forEach(e => e.remove());
+    [].slice.call(e.children).splice(1).forEach(e => e.remove());
     data.forEach(item => {
       var ch = e.child();
       ch.style.backgroundColor = 'white';
@@ -34,7 +34,7 @@ enig.autocomplete = e => {
       ch.onmouseout = () =>  ch.style.backgroundColor = 'white';
       ch.onclick = () => {
         e.value = input.value = ch.value;
-        myac.querySelectorAll('div').forEach(e => e.style.display = 'none');
+        e.querySelectorAll('div').forEach(e => e.style.display = 'none');
         if(e.onselected) 
           e.onselected.call(e, e.data.filter(item => item.value==e.value)[0]);
       }
@@ -43,7 +43,7 @@ enig.autocomplete = e => {
   }
   e.onkeyup = ev => {
     if(ev.keyCode == 27){
-      myac.querySelectorAll('div').forEach(e => e.style.display = 'none');
+      e.querySelectorAll('div').forEach(e => e.style.display = 'none');
       return input.value = '';
     }
     if(ev.keyCode == 13) return;
