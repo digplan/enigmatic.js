@@ -46,6 +46,10 @@
       }
   };
   
+  enig.format = function(str, obj) {
+    return str.replace(/\${[^}]*}/g, function(o) { return obj[o.replace(/\$|{|}/g,'')] });
+  }
+
   window.onload = enig.process = function(){
     if(enig.preready) enig.preready();
     $('[control]').forEach(function(e) {
