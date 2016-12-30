@@ -1,6 +1,14 @@
 enig.panel = (e) => {
   var templ = e.innerHTML;
 
+  function getSub(data, prop){
+    var a = prop.split('.');
+    a.forEach((k)=>{
+      data = data[k];
+    });
+    return data;
+  }
+  
   function arr(data){
     data.forEach((row)=>{
       var child = e.child();
@@ -9,7 +17,8 @@ enig.panel = (e) => {
   }
   
   e.setValue = (data) => {
-    console.log(data)
+    var prop = e.getAttribute('data-prop');
+    if(prop) data = getSub(data, prop);
     e.innerHTML = '';
     if(!data.push)
       e.innerHTML = enig.format(templ, data);
