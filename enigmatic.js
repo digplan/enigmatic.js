@@ -52,7 +52,9 @@
         x.send(data);
     });
   }
-  enig.get = enig.ajax.bind(this, 'GET');
+  enig.get = (url, headers, setvalue)=>{
+    return enig.ajax('GET', url, null, headers, setvalue);
+  }
   
   enig.data = new Proxy({}, {
     set: function(target, property, value, receiver) {
