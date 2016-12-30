@@ -34,12 +34,14 @@
     return this.appendChild(e);
   };
   
-  enig.ajax = (method, url, data={}, headers={}, setvalue) => {
+  enig.ajax = (method, url, options) => {
+    if(!options) options = {};
+    if(!options.headers) options.headers = {};
     return new Promise(function (resolve, reject) {
         var x = new XMLHttpRequest();
         x.open(method, url);
-        for(var k in headers) 
-          x.setRequestHeader(k, headers[k]);
+        for(var k in options.headers) 
+          x.setRequestHeader(k, options.headers[k]);
         x.onload = (ev)=>{ 
           var obj = {response: ev.target.response, headers: x.getAllResponseHeaders().split('\n'), json: null};
           try {
@@ -49,11 +51,11 @@
           resolve(obj);
         };
         x.onerror = reject;
-        x.send(data);
+        x.send(options.data);
     });
   }
-  enig.get = (url, headers, setvalue)=>{
-    return enig.ajax('GET', url, null, headers, setvalue);
+  enig.get = (url, options)=>{
+    return enig.ajax('GET', url, options);
   }
   
   enig.data = new Proxy({}, {
