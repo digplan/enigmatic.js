@@ -59,12 +59,7 @@
       $(`[data=${property}]`).forEach(function(e){
          var v = value;
          var prop = e.getAttribute('data-property');
-         if(prop){
-           prop = prop.split('.');
-           prop.forEach((k)=>{
-              v = v[k];
-           });
-         }
+         if(prop) v = eval(property + '.' + prop);
          if(e.setValue) e.setValue(v);
          else if(typeof e.value != 'undefined') e.value = v;
          else if(typeof e.innerHTML != 'undefined') e.innerHTML = v;
