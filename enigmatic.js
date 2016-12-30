@@ -45,7 +45,7 @@
           try {
             obj.json = JSON.parse(ev.target.response);
           } catch(e){}
-          if(setvalue && obj.json) setvalue = obj.json;
+          if(setvalue && obj.json) enig.data[setvalue] = obj.json;
           resolve(obj);
         };
         x.onerror = reject;
