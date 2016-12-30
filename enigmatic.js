@@ -34,17 +34,18 @@
     return this.appendChild(e);
   };
   
-  enig.ajax = function(v, url, d, cb, headers){
-      var x = new XMLHttpRequest();
-      x.open(v, url, true);
-      if(headers)
-        for(var k in headers) x.setRequestHeader(k, headers[k]);
-      if(v == 'GET') d = null;
-      x.send(v == 'GET' ? null:d);
-      x.onload = (r) => {
-        cb(r.target.responseText, x.getAllResponseHeaders(), x.status);
-      }
-  };
+  enig.ajax = (method, url, data={}, headers={}) => {
+    return new Promise(function (resolve, reject) {
+        var x = new XMLHttpRequest();
+        x.open(method, url);
+        for(var k in headers) 
+          x.setRequestHeader(k, headers[k]);
+        x.onload = (ev)=>{ resolve({response: ev.target.response, headers: x.getAllResponseHeaders().split('\n')}) };
+        x.onerror = reject;
+        x.send(data);
+    });
+  }
+  enig.get = enig.ajax.bind(this, 'GET');
   
   enig.format = function(str, obj) {
     return str.replace(/\${[^}]*}/g, function(o) { return obj[o.replace(/\$|{|}/g,'')] });
