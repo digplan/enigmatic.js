@@ -1,4 +1,18 @@
- enig.userlogin = function(e) {
+/*
+<i id=login class='ion-person thirty' style='float:right; margin-right:40px'></i>
+<userlogin id=user style='float:right; margin-right:40px' authtitle=Hi authkey='fBLesHV6GaLAbGs0ajbJEAT6KtdTfm8c' authid='digplan.auth0.com' control hidden>
+  <span style='cursor:default'>${name}</span> 
+  <img style='height:30px; border-radius: 20px; transform: translateY(25%)' src=# > <br> 
+  <div id=userprefs style='margin-left:30px'> <i id=logout class='left ion-close-round red push-one'></i></div>
+</userlogin>
+
+<script>
+  document.onlogin = ()=>{
+    //do something
+  };
+</script>
+*/
+enig.userlogin = function(e) {
    var user = e;
     function loggedIn(user){
        login.hidden = userprefs.hidden = true; user.hidden = false;
