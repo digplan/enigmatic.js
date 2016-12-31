@@ -74,6 +74,8 @@ a {text-decoration: none}
 .margins {  margin: 15px}
 .padding {  padding: 15px}
 .border {  border: 10px solid #eee}
+
+.push-half {  margin-left: 6.25%}
 .push-one {  margin-left: 12.5%}
 .push-two {  margin-left: 25%}
 .push-three {  margin-left: 37.5%}
@@ -81,6 +83,7 @@ a {text-decoration: none}
 .push-five {  margin-left: 62.5%}
 .push-six {  margin-left: 75%}
 .push-seven {  margin-left: 87.5%}
+.pull-half {  margin-right: 6.25%}
 .pull-one {  margin-right: 12.5%}
 .pull-two {  margin-right: 25%}
 .pull-three {  margin-right: 37.5%}
