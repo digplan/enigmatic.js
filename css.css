@@ -17,6 +17,21 @@ a {text-decoration: none}
   transform: translateY(-50%);
 }
 
+.shadow { box-shadow: 6px 6px 6px #dbdbdb }
+.loading {
+  border: 6px solid #dbdbdb;
+  border-radius: 50%;
+  border-top: 6px solid #000000;
+  width: 10px;
+  height: 10px;
+  -webkit-animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;
+}
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
 .cursor { cursor: default; }
 .bg-navy {  background-color: #001f3f}
 .bg-blue {  background-color: #0074d9}
