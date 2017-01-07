@@ -77,9 +77,14 @@
 
   window.onload = enig.process = function(){
     if(enig.preready) enig.preready();
-    $('[control]').forEach(function(e) {
+    $('[control]').forEach((e)=>{
       var ename = e.tagName.toLowerCase();
       window.enig[ename](e);
+      e.css = (rules, sel)=>{
+        var style = document.createElement("style");
+        document.head.appendChild(style);
+        style.sheet.insertRule(`${sel||e.tagName} { ${rules} }`); 
+      }
     });
     if(enig.ready) enig.ready();
   };
