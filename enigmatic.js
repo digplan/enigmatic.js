@@ -65,8 +65,7 @@
          var prop = e.getAttribute('data-property');
          if(prop) v = eval('value.' + prop);
          if(e.setValue) e.setValue(v);
-         else if(typeof e.value != 'undefined') e.value = v;
-         else if(typeof e.innerHTML != 'undefined') e.innerHTML = v;
+         if(e.render) e.render(v);
       });
       target[property] = value;
     }
