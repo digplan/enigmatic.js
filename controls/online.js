@@ -1,10 +1,9 @@
-/*
-  <online style='width:50px' control></online>
-*/
+// <online style='position:absolute' class='three two-high' control>
+
 enig.online = (e)=>{
- function check(){
-   e.children[0].color = navigator.onLine ? 'green': '#dbdbdb';
- }
- e.innerHTML = `<hr size="7" width="${e.style.width}" color="green">`;
+ var check = k =>
+   e.style.backgroundColor = navigator.onLine ? 'green': '#f44242';
+ e.innerHTML = '&nbsp';
+ check();
  setInterval(check, 3000);
 }
