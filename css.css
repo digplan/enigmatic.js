@@ -1,3 +1,5 @@
+body {margin:0}
+
 @font-face {
   font-family: 'Roboto';
   font-style: normal;
@@ -5,7 +7,7 @@
   src: local('Roboto Regular'), local('Roboto-Regular'), url(//themes.googleusercontent.com/static/fonts/roboto/v10/2UX7WLTfW3W8TclTUvlFyQ.woff) format('woff');
 }
 .flat { border: 0; outline-width: 0}
-.fit {height:100%; width: 100%}
+.fill {height:100%; width: 100%}
 
 .fadein {
     font-size: 21px;
