@@ -1,47 +1,26 @@
+/*
+<button onclick='mymodal.open()'>Open Modal</button>
+<modal id=mymodal control>
+  hey there
+</modal>
+*/
 enig.modal = (e) => {
-  enig.loadcss('', `
-      <style>
-      modal {
-          display: none; /* Hidden by default */
-          position: fixed; /* Stay in place */
-          z-index: 1; /* Sit on top */
-          padding-top: 100px; /* Location of the box */
-          left: 0;
-          top: 0;
-          width: 100%; /* Full width */
-          height: 100%; /* Full height */
-          overflow: auto; /* Enable scroll if needed */
-          background-color: rgb(0,0,0); /* Fallback color */
-          background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-      }
-      /* Modal Content */
-      .modal-content {
-          background-color: #fefefe;
-          margin: auto;
-          padding: 20px;
-          border: 1px solid #888;
-          width: 80%;
-      }
-      /* The Close Button */
-      .close {
-          color: #aaaaaa;
-          float: right;
-          font-size: 28px;
-          font-weight: bold;
-      }
-      .close:hover,
-      .close:focus {
-          color: #000;
-          text-decoration: none;
-          cursor: pointer;
-      }
-      </style>
-  `);
-    
-  e.open = function() {
-    this.style.display = "block";
-  };
-  e.close = function() {
-    this.style.display = "none";
-  };
+  e.css(`visibility: hidden; position: fixed; z-index: 1; 
+      padding-top: 100px; left: 0; top: 0; width: 100%;
+      height: 100%; overflow: auto; background-color: rgb(0,0,0); 
+  	  background-color: rgba(0,0,0,0.4);opacity: 0;
+      transition: visibility 0s, opacity 0.2s linear;`)
+  e.css('visibility: visible; opacity: 1;', 'modal[show]')
+  e.css(` background-color: #fefefe;  margin: auto;
+          padding: 20px;  border: 1px solid #888;
+          width: 80%;`, '.modal-content');
+  e.css(` color: #aaaaaa;  float: right;
+          font-size: 28px; font-weight: bold; cursor:default`, '.close');
+  e.open = (k) => {e.setAttribute('show', true)};
+  e.close = (k) => {e.removeAttribute('show')};
+  e.innerHTML = `
+    <div class="modal-content">
+      <span class="close" onclick='mymodal.close()'>×</span>
+      <p class=roboto>${e.innerHTML}</p>
+    </div>`
 };
