@@ -1,22 +1,17 @@
 /*
-  <places id=myplaces api-key=KEY control></places>
-  myplaces.onselected = (e) => alert(JSON.stringify(e));
+  <input style='height:100%;width:100%' id=from api-key=AIzaSyDiZXiGMnzU_slDA40hA2-1XTEZHsUdA9s control=places></input>
+   e.selected = ...
 */
 
-enig.places_cb = () => {
+enig.places_cb = () => { 
   var e = enig.places.count.shift();
-  var input = e.child('input');
-  input.style.width = '100%';
-  input.style.height = '100%';
-  input.onclick = () => input.select();
-  input.onkeyup = (ev) => {
-    if (ev.keyCode == 27) input.value = '';
+  e.onclick = () => e.select();
+  e.onkeyup = (ev) => {
+    if (ev.keyCode == 27) e.value = '';
   }
-  var ac = new google.maps.places.Autocomplete(input, { types: ['address'] });
+  var ac = new google.maps.places.Autocomplete(e, { types: ['address'] });
   ac.addListener('place_changed', () => {
     e.selected = ac.getPlace();
-    if(e.onselected)
-      e.onselected(ac.getPlace());
   });
   if (enig.places.count.length) enig.places_cb();
 }
