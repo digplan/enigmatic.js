@@ -79,6 +79,8 @@
     if(enig.preready) enig.preready();
     $('[control]').forEach((e)=>{
       var ename = e.tagName.toLowerCase();
+      var cn = e.getAttribute('control');
+      if(cn) ename = cn;
       e.css = (rules, sel)=>{
         var style = document.createElement("style");
         document.head.appendChild(style);
