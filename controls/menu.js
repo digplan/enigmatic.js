@@ -1,46 +1,22 @@
+/*
+<a id=btn>Toggle menu</a>
+<menu id=mymenu for=btn control> 
+    <li onclick="alert(1)">Alert One</li>
+    <li onclick="alert(2)">Alert Two</li>
+    <li onclick="alert(3)">Alert Three</li>
+    <li onclick="alert(4)">Alert Four</li>
+</menu>
+*/
 enig.menu = (e) => {
-    enig.loadcss('', `
-      <style>
-        menu {
-          position: relative;
-        }
-        menu > li {
-          background-color: #f9f9f9;
-          min-width: 160px;
-          max-width: 300px;
-          list-style: none;
-          padding: 10px;
-          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
-          cursor: arrow;
-          text-decoration: none;
-        }
-        menu li:hover {
-          background-color: #f1f1f1;
-        }
-      </style>
-    `);
-    e.style.display = 'none';
-    
-    e.toggle = () => {
-      e.style.display = e.style.display == 'none' ? 'block':'none';
-    };
-    
-    document.addEventListener('click', (ev) => {
-       //if(ev.target.parentElement.id == e.id) return;
-       if(ev.target.id == e.getAttribute('for')) return;
-       e.style.display = 'none';
-    })
-    
-    if(!e.hasAttribute('contextmenu')) return;
-    
-    window.oncontextmenu = function(ev) {
-        e.style.display = 'block';
-        var pos = window.cpos;
-        e.style.position = 'fixed';
-        e.style.top = `${ev.clientY}px`;
-        e.style.left = `${ev.clientX-30}px`;
-        ev.stopPropagation();
-        return false;
-    }
-    
+    e.css('position: relative;cursor:default;padding: 0;display: none');
+    e.css(`background-color: #f9f9f9; min-width: 160px; max-width: 300px;
+          list-style: none; padding: 10px; box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.1);
+          cursor: arrow; box-sizing: border-box;`, 'menu > li');
+    e.css('background-color: #f1f1f1', 'menu li:hover');
+    e.show = () => (e.style.display = 'block');
+    e.hide = () => (e.style.display = 'none');
+    document.addEventListener('click', e.hide);
+    var trigger = $('#' + e.getAttribute('for'))[0];
+    trigger.onclick = e.show;
+    trigger.addEventListener('click', e=>{e.stopPropagation()});
 };
