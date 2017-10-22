@@ -1,5 +1,12 @@
 enigmatic = x => {
  try {
+   window.load = function(s, cb){
+    var css = s.match(/css$/);
+    var i = document.body.appendChild(document.createElement(css ? 'link' : 'script'));
+    i.onload = cb||null;
+    if(css) css.rel = "stylesheet";
+    i[css ? 'href' : 'src'] = s;
+   }
    window.$ = document.querySelectorAll.bind(document);
    window.data = new Proxy({}, {
     set: function(target, property, value, receiver) {
