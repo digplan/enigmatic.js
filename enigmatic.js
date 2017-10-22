@@ -1,5 +1,6 @@
 enigmatic = x => {
  try {
+   window.$ = document.querySelectorAll.bind(document);
    window.data = new Proxy({}, {
     set: function(target, property, value, receiver) {
      document.querySelectorAll(`[data=${property}]`).forEach(function(e){
