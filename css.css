@@ -102,7 +102,7 @@ a {text-decoration: none}
 
 .left {  float: left}
 .right {  float: right}
-.clear {  clear: both}
+.clear {  display:table}
 .center {  margin: 0 auto;  text-align: center}
 .margins {  margin: 15px}
 .padding {  padding: 15px}
