@@ -1,5 +1,6 @@
 window.onload = function(){
 try {
+ if(pre) pre()
  data = new Proxy({}, {
   set: function(target, property, value, receiver) {
    document.querySelectorAll(`[data=${property}]`).forEach(function(e){
@@ -24,7 +25,7 @@ try {
   }
   window[ename](e);
  });
- run()
+ if(run) run()
 } catch(e) {
    document.body.innerHTML = `<div style='color:red'>${e.stack}</div>`
 }  
