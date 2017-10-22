@@ -1,6 +1,5 @@
 enigmatic = x => {
  try {
- window.erun = function (){
    window.data = new Proxy({}, {
     set: function(target, property, value, receiver) {
      document.querySelectorAll(`[data=${property}]`).forEach(function(e){
@@ -25,7 +24,6 @@ enigmatic = x => {
     }
     window[ename](e);
    });
- }
  } catch(e) {
    document.body.innerHTML = `<div style='color:red'>${e.stack}</div>`
  }  
