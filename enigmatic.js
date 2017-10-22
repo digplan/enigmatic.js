@@ -1,5 +1,9 @@
 enigmatic = x => {
  try {
+   window.views = e =>
+    e.set = showid =>
+     $('views > view').forEach( v => v.hidden = v.id != showid )
+  
    window.load = function(s, cb){
     var css = s.match(/css$/);
     var i = document.body.appendChild(document.createElement(css ? 'link' : 'script'));
