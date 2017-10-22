@@ -1,6 +1,6 @@
 window.onload = function(){
 try {
- function run(){
+ window.erun = function (){
  data = new Proxy({}, {
   set: function(target, property, value, receiver) {
    document.querySelectorAll(`[data=${property}]`).forEach(function(e){
